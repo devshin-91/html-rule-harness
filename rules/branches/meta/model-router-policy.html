@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Router Policy · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="meta.model-policy"
+      data-parent="meta.root"
+      data-depth="2"
+      data-title="난이도별 모델 · Effort 탐색 정책 (Model Router Policy)"
+      data-tier="low"
+      data-effort="low"
+      data-skills="rule-router"
+      data-keywords="model tier,low,mid,high,effort,escalation,model switch,하위모델,중위모델,상위모델,모델 변경,모델 탐색,난이도"
+      data-escalation-policy="overthinking-guard-low"
+      data-workload="fast_extraction"
+      data-escalate-when="none">
+  <header class="rule-head">
+    <h1>난이도별 모델 · Effort 탐색 정책</h1>
+    <p class="rule-summary">작업별 역량 하한·검증기 유무·그라운딩 여부에 따라 동일 모델 Effort 상향과 모델 자체 전환을 분리 결정합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>Effort 상향 vs 모델 변경 결정 정책</h2>
+    <ul>
+      <li><strong>effort-first-with-verifier</strong> (코딩·루프): 테스트·컴파일러 검증기가 있으면 1회 실패/2–3파일 범위는 동일 모델 <strong>Effort 우선 상향</strong>(<code>Ma 2025</code>). 검증기 부재(Modal Ceiling, <code>arXiv:2606.28661</code>)나 2회+ 실패·4+파일 시 <strong>모델 상향 전환</strong>(Sonnet→Opus medium).</li>
+      <li><strong>capacity-switch-sensitive</strong> (아키텍처·동시성·반론·보안·탁월한 UI): Reasoning Floor(<code>arXiv:2504.14047</code>) 또는 아첨 위험이 있으므로 작은 모델 Effort 증가 대신 상위 모델로 즉시 전환한다.</li>
+      <li><strong>grounding-over-thinking</strong> (리서치·RAG): 사실 누락·검색 부실은 thinking 증가로 악화되므로(<code>arXiv:2508.15050</code>) 외부 검색·강력한 리랭커(<code>+7.5 NDCG@10</code>)로 전환한다.</li>
+      <li><strong>overthinking-guard-low</strong> (단순 요약·구조화 추출): 역-U자 과잉 숙고(<code>arXiv:2606.02835</code>) 차단을 위해 <code>low/low</code> 기본 유지 후 필요 시만 조정.</li>
+      <li><strong>모델명 참고·일반 기준선 고지</strong>: 카탈로그 모델명은 티어 예시이며 실제 환경에서 호출 가능한 최신 모델·Effort로 매핑한다(일반 규칙이므로 환경·세부 작업에 따라 효과 편차 가능).</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+
+<section class="rule-node" style="margin-top:0;">
+  <div class="rule-card">
+    <h2>프로바이더별 모델 티어 · Effort 제어 카탈로그 (Human Reference)</h2>
+    <table class="policy-table">
+      <thead>
+        <tr><th>티어 / 점수</th><th>Effort API</th><th>후보 모델군</th><th>모델 변경 · 특화 전환 기준</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>low (0–41)</strong></td><td><code>low</code> / <code>minimal</code></td><td>Gemini Flash-Lite / Claude Haiku / GPT-mini·nano</td><td>과잉 숙고 역전 방지 기본 유지; 조건 비교 시 <code>effort:medium</code>, 반론/복수 파일 시 <code>mid</code> 전환</td></tr>
+        <tr><td><strong>mid (42–74)</strong></td><td><code>medium</code> (<code>adaptive</code>)</td><td>Gemini Flash (1M) / Claude Sonnet / GPT balanced</td><td>테스트 존재 1회 실패 → <code>effort:high</code>; Sonnet <code>xhigh</code> 초과·검증기 부재·문헌 상충 → <code>high</code> 전환</td></tr>
+        <tr><td><strong>high (75–100)</strong></td><td><code>medium</code>~<code>high</code></td><td>Gemini Pro / Claude Opus / GPT Frontier</td><td>명확한 아키텍처 명세 시 Opus <code>medium</code>, 동시성·보안·상충 종합 시 <code>high</code> 적용</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

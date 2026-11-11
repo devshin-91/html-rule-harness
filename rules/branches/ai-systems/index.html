@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Use-Cases Trunk · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="ai-systems.root"
+      data-parent="root"
+      data-depth="1"
+      data-title="AI 유즈케이스 · 기법 스택 (Prompt/Context/Harness/Loop/Graph)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="ai-architecture-stack"
+      data-pillars="prompt,context,harness,loop,graph"
+      data-keywords="ai,prompt,context,harness,loop,graph,frontier,rag,agent,유즈케이스,프롬프트,컨텍스트,하네스,루프,그래프,조합,최상위"
+      data-escalate-when="multi_pillar_coupling|durable_hitl">
+  <header class="rule-head">
+    <h1>AI 유즈케이스 · 기법 스택 분기</h1>
+    <p class="rule-summary">작업 특성에 맞는 단일 기법, 복합 조합, 최상위 모델 크래프트 분기를 선택합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>아키텍처 선택 원칙</h2>
+    <ul>
+      <li>단순 작업에 그래프·루프를 과잉 적용하지 않는다.</li>
+      <li>지식은 Context, 안전은 Harness, 수렴은 Loop, 병렬·재개는 Graph로 분담한다.</li>
+    </ul>
+  </section>
+
+  <nav class="branch-grid" data-children aria-label="AI 기법 세부 분기">
+    <h2>세부 분기 (Depth 2)</h2>
+    <a class="branch-link" href="prompt-opt.html" data-target="ai-systems.prompt-opt" data-tier="low" data-when="JSON/Pydantic 스키마, Prompt Chaining, DSPy"><strong>1. Prompt 중심</strong></a>
+    <a class="branch-link" href="context-rag.html" data-target="ai-systems.context-rag" data-tier="mid" data-when="RAG, GraphRAG, Mem0, Compaction, Context Rot"><strong>2. Context 중심</strong></a>
+    <a class="branch-link" href="harness-guard.html" data-target="ai-systems.harness-guard" data-tier="mid" data-when="샌드박스, 훅, 가드레일, Evals, 스캐폴딩"><strong>3. Harness 중심</strong></a>
+    <a class="branch-link" href="agent-loop.html" data-target="ai-systems.agent-loop" data-tier="mid" data-when="ReAct, Evaluator-Optimizer, 테스트 자가수정 루프"><strong>4. Loop 중심</strong></a>
+    <a class="branch-link" href="graph-orch.html" data-target="ai-systems.graph-orch" data-tier="high" data-when="LangGraph/ADK 그래프, 멀티에이전트, HITL"><strong>5. Graph 중심</strong></a>
+    <a class="branch-link" href="combo-recipes.html" data-target="ai-systems.combo-recipes" data-tier="high" data-when="기법 조합(Context+Loop, Harness+Loop, Graph+Harness, CRAG)"><strong>6. 복합 기법 조합</strong></a>
+    <a class="branch-link" href="frontier-craft.html" data-target="ai-systems.frontier-craft" data-tier="high" data-when="최상위 모델, 비주얼/UI 크래프트, Anti-Slop, 스크린샷 루프"><strong>7. 최상위 모델 크래프트</strong></a>
+  </nav>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

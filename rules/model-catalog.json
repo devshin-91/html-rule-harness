@@ -1,0 +1,100 @@
+{
+  "version": "2.0",
+  "description": "Provider-agnostic difficulty tier, adaptive effort, and task-specific model-switching catalog explored by scripts/resolve_rule.py and rules/index.html",
+  "provider_controls": {
+    "OpenAI": {
+      "parameter": "reasoning.effort / reasoning_effort",
+      "levels": ["none", "minimal", "low", "medium", "high", "xhigh"],
+      "guidance": "비추론/mini 모델은 단순 추출·편집에 배치하고, 일반 로직은 reasoning low/medium, 고모호·아키텍처·분산 루프는 frontier + high 이상으로 전환"
+    },
+    "Anthropic": {
+      "parameter": "output_config.effort + thinking:{type:\"adaptive\"}",
+      "levels": ["low", "medium", "high", "xhigh", "max"],
+      "guidance": "Haiku(대량·요약·게이트) → Sonnet(일반 코딩·디버깅) → Opus(Sonnet high/xhigh 초과 시 Opus medium으로 모델 전환)"
+    },
+    "Google": {
+      "parameter": "generation_config.thinking_level",
+      "levels": ["minimal", "low", "medium", "high"],
+      "guidance": "Flash(멀티모달·1M 대용량 컨텍스트 수집) → Pro(상충 근거 교차 검증·고난도 설계·비주얼 크래프트)"
+    }
+  },
+  "adaptation_policies": {
+    "effort-first-with-verifier": {
+      "label": "검증기 기반 Effort 우선 조정",
+      "summary": "테스트·컴파일러 등 외부 검증기가 있으면 동일 모델에서 Effort를 먼저 높이고(Ma 2025, Li & Shi 2026), 검증기가 없거나 2회+ 실패/4+파일 결합 시 모델 상향(Modal Ceiling/T2MO)",
+      "switch_trigger": "no_verifier|attempts>=2|coupled_files>=4|concurrency|security"
+    },
+    "capacity-switch-sensitive": {
+      "label": "모델 역량 하한 · 아첨 민감 즉시 전환",
+      "summary": "아키텍처·동시성·보안·반론 저항(arXiv:2509.16533)·고난도 비주얼은 하위 모델에 Effort만 올려도 실패(Reasoning Floor, arXiv:2504.14047)하므로 상위 모델로 전환",
+      "switch_trigger": "below_reasoning_floor|attempts>=2|conflicting_sources|security"
+    },
+    "grounding-over-thinking": {
+      "label": "내부 추론 대신 검색·리랭킹 모델 전환",
+      "summary": "사실 누락·RAG 검색 부실은 thinking 토큰 증가로 해결되지 않고 과잉 확신을 유발하므로(arXiv:2508.15050, arXiv:2603.14635) 외부 검색·강력한 리랭커로 전환",
+      "switch_trigger": "contradictory_papers|multi_doc_synthesis"
+    },
+    "overthinking-guard-low": {
+      "label": "과잉 숙고 역전 방지 (저티어/저노력 방어)",
+      "summary": "단순 요약·구조화 추출은 과잉 추론 시 정답을 뒤집는 역-U자 현상(arXiv:2502.07266, arXiv:2606.02835)을 피하기 위해 low/low를 기본 유지",
+      "switch_trigger": "counterargument|ambiguity+multi_file|attempts>=2"
+    }
+  },
+  "workload_specialists": {
+    "fast_extraction": {
+      "label": "단순 추출 · 3줄 요약 · 보일러플레이트",
+      "switch_note": "Gemini Flash-Lite / Claude Haiku (low) / GPT-mini(minimal-low) 유지 — 상위 모델/high effort 전환 지양"
+    },
+    "verified_coding": {
+      "label": "테스트 게이트 기반 코딩 · 런타임 디버깅",
+      "switch_note": "테스트 존재 시 Sonnet·Flash·GPT balanced에서 Effort 먼저 상향; 테스트 부재·2회 실패 시 Opus(medium)·Pro·Frontier로 모델 전환"
+    },
+    "long_context_rag": {
+      "label": "대용량 문서 RAG · 리랭킹 · 다중 출처 감사",
+      "switch_note": "1M 컨텍스트 수집은 Gemini Flash 유리; 검색 노이즈 시 thinking 증가 대신 리랭커 상향(+7.5 NDCG@10); 문헌 상충 시 Gemini Pro / Opus 전환"
+    },
+    "balanced_debate_reasoning": {
+      "label": "찬반 균형 · 반론 검토 · 숨은 가정 감사",
+      "switch_note": "Haiku/Flash-Lite는 반박에 쉽게 동조(arXiv:2509.16533) → Sonnet / Gemini Flash / GPT balanced(medium~high)로 모델 전환"
+    },
+    "frontier_architecture_visual": {
+      "label": "분산 아키텍처 · 동시성 · 탁월한 비주얼 크래프트",
+      "switch_note": "Opus (clear spec=medium / race=high) · Gemini Pro · GPT Frontier(high) 직접 배치, 과잉 CoT 문구 금지"
+    }
+  },
+  "tiers": {
+    "low": {
+      "label": "하위 모델 (Low / Fast-Lite Tier)",
+      "score_range": [0, 41],
+      "default_effort": "low",
+      "purpose": "명확한 단건 논증, 3줄 요약, 단순 오타/포맷 수정, 단일 문서 lookup (모호성·비교 조건 시 effort:medium 우선 조정)",
+      "candidates": [
+        { "provider": "Google Gemini", "model": "gemini-flash-lite", "note": "최소 지연·최저 비용 단건 생성 (thinking minimal/low)" },
+        { "provider": "Anthropic Claude", "model": "claude-haiku", "note": "경량 논리/분류/요약 (effort low)" },
+        { "provider": "OpenAI", "model": "gpt-5-mini / nano", "note": "단순 편집·구조화 추출 (reasoning.effort low)" }
+      ]
+    },
+    "mid": {
+      "label": "중위 모델 (Mid / Balanced Tier)",
+      "score_range": [42, 74],
+      "default_effort": "medium",
+      "purpose": "찬반·반론·가정 감사 논증, 테스트 기반 디버깅, RAG/다중 출처 감사 (검증기 존재 1회 실패 시 effort:high 조정, 검증기 부재/2회 실패 시 상위 전환)",
+      "candidates": [
+        { "provider": "Google Gemini", "model": "gemini-flash (High/Medium)", "note": "균형 잡힌 코드 루프 · 1M 컨텍스트 수집(thinking medium/high)" },
+        { "provider": "Anthropic Claude", "model": "claude-sonnet", "note": "안정적 디버깅·구조화 논증 (adaptive high 초과 시 Opus medium 전환)" },
+        { "provider": "OpenAI", "model": "gpt-5 / codex-medium", "note": "테스트 기반 수정 및 논거 검증 (reasoning.effort medium/high)" }
+      ]
+    },
+    "high": {
+      "label": "상위 모델 (High / Frontier Tier)",
+      "score_range": [75, 100],
+      "default_effort": "high",
+      "purpose": "다중 모듈 아키텍처, 동시성/분산 장애, 상충 문헌 심층 교차 논증, 탁월한 비주얼 크래프트",
+      "candidates": [
+        { "provider": "Google Gemini", "model": "gemini-pro", "note": "고난도 추론·상충 문헌 교차·아키텍처 설계 (thinking high)" },
+        { "provider": "Anthropic Claude", "model": "claude-opus", "note": "복합 트레이드오프·고위험 설계 (명세 명확 시 medium, 동시성/보안 시 high)" },
+        { "provider": "OpenAI", "model": "gpt-5-pro / reasoning-high", "note": "고위험 동시성·대규모 마이그레이션 (reasoning.effort high/xhigh)" }
+      ]
+    }
+  }
+}

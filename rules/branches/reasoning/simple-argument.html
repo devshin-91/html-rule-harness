@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Argument · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="reasoning.simple-argument"
+      data-parent="reasoning.root"
+      data-depth="2"
+      data-title="간단한 논증 생성 (Simple Argument)"
+      data-tier="low"
+      data-effort="low"
+      data-skills="claim-verify"
+      data-pillars="prompt"
+      data-keywords="simple argument,short draft,pros cons,summary,간단한 논증,논증 생성,단순 요약,초안,3줄 요약"
+      data-escalation-policy="overthinking-guard-low"
+      data-workload="fast_extraction"
+      data-escalate-when="counterargument|conflicting_sources|external_citations>=4">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 2 · Reasoning Leaf · Low Tier</div>
+    <h1>간단한 논증 생성</h1>
+    <p class="rule-summary">전제가 명확한 단건 논증·3줄 요약에 하위 모델(low)을 배치하며, 과잉 추론으로 정답이 뒤집히는 현상(arXiv:2606.02835)을 방지합니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-low" data-field="tier">Model Tier: low (하위 모델 권장)</span>
+      <span class="badge effort-low" data-field="effort">Effort: low (조건 비교 시 medium 조정)</span>
+      <span class="badge skill" data-field="skills">Skills: claim-verify</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>실행 규칙 (Minimal Context)</h2>
+    <ul>
+      <li>출력 구조는 <strong>전제 → 핵심 근거 → 결론 → 적용 한계(1줄)</strong> 순으로 간결하게 유지한다.</li>
+      <li>단순 논증에 과잉 CoT를 강제하면 오히려 오류가 증가하므로(<code>arXiv:2502.07266</code>) <code>low</code>를 기본값으로 두고, 다각도 조건 비교 시에만 Effort를 <code>medium</code>으로 상향한다.</li>
+      <li>제공되지 않은 수치나 외부 인용을 추측으로 생성하지 않는다.</li>
+    </ul>
+  </section>
+
+  <section class="rule-card alert-escalate" data-escalation>
+    <h2>에스컬레이션 기준</h2>
+    <p>반론 재반박·숨은 가정 감사가 필요하면 <code>reasoning.structured-argument</code>(중위 모델)로, 상충 문헌 교차 종합은 <code>reasoning.deep-synthesis</code>(상위 모델)로 전환한다.</p>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

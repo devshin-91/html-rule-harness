@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concurrency Debugging · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="coding.debugging.concurrency"
+      data-parent="coding.debugging"
+      data-depth="3"
+      data-title="동시성 · 비동기 · 분산 버그 (Concurrency &amp; Race)"
+      data-tier="high"
+      data-effort="high"
+      data-skills="targeted-debug,architecture-rfc"
+      data-pillars="harness,loop,graph"
+      data-keywords="race condition,deadlock,async,thread,lock,distributed,flaky,동시성,레이스,비동기,데드락,분산"
+      data-escalation-policy="capacity-switch-sensitive"
+      data-workload="frontier_architecture_visual"
+      data-escalate-when="none">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 3 · Coding Leaf · Escalated High Tier</div>
+    <h1>동시성 · 비동기 · 분산 버그</h1>
+    <p class="rule-summary">비결정적 타이밍·락 순서·상태 불일치가 얽힌 디버깅으로 상위 모델과 high effort로 에스컬레이션합니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-high" data-field="tier">Model Tier: high (상위 모델 에스컬레이션)</span>
+      <span class="badge effort-high" data-field="effort">Effort: high</span>
+      <span class="badge skill" data-field="skills">Skills: targeted-debug, architecture-rfc</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>말단 실행 체크리스트</h2>
+    <ul>
+      <li>상태 전이(State Transition), 락 획득 순서, 비동기 취소/타임아웃 경계를 먼저 표로 도식화한다.</li>
+      <li>임시 `sleep`으로 타이밍을 회피하지 말고 결정적 동기화/원자적 연산으로 원인을 제거한다.</li>
+      <li>반복 스트레스 테스트(N회 루프)로 간헐적 실패 재현·소멸을 확인한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

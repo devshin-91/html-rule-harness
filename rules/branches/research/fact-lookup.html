@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fact Lookup · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="research.fact-lookup"
+      data-parent="research.root"
+      data-depth="2"
+      data-title="단일 문서 · 시그니처 조회 (Fact Lookup)"
+      data-tier="low"
+      data-effort="low"
+      data-skills="claim-verify"
+      data-keywords="lookup,signature,flag,version,single doc,조회,시그니처,옵션 확인"
+      data-escalation-policy="grounding-over-thinking"
+      data-workload="fast_extraction"
+      data-escalate-when="missing_in_primary_doc|sources>=2">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 2 · Research Leaf · Low Tier</div>
+    <h1>단일 문서 · 시그니처 조회</h1>
+    <p class="rule-summary">단일 공식 문서나 로컬 파일에서 정확한 사실·옵션만 빠르게 추출하는 하위 모델 분기입니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-low" data-field="tier">Model Tier: low (하위 모델 권장)</span>
+      <span class="badge effort-low" data-field="effort">Effort: low</span>
+      <span class="badge skill" data-field="skills">Skills: claim-verify</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>실행 규칙</h2>
+    <ul>
+      <li>대상 파일 또는 공식 문서의 해당 섹션만 읽어 정확한 값/시그니처/경로를 인용한다.</li>
+      <li>문서에 없는 내용은 추론으로 채우지 말고 미확인으로 명시한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quick Edit · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="coding.quick-edit"
+      data-parent="coding.root"
+      data-depth="2"
+      data-title="단순 편집 · 보일러플레이트 (Quick Edit)"
+      data-tier="low"
+      data-effort="low"
+      data-skills=""
+      data-pillars="prompt"
+      data-keywords="typo,rename,format,boilerplate,lint,snippet,오타,포맷,단순수정,스니펫,리네임"
+      data-escalation-policy="effort-first-with-verifier"
+      data-workload="fast_extraction"
+      data-escalate-when="logic_change|test_failure|coupled_files>=2">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 2 · Coding Leaf · Low Tier</div>
+    <h1>단순 편집 · 보일러플레이트</h1>
+    <p class="rule-summary">로직 변경이 없는 단일 파일 수정, 오타 교정, 스타일/포맷 정리에 하위 모델을 배치합니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-low" data-field="tier">Model Tier: low (하위 모델 권장)</span>
+      <span class="badge effort-low" data-field="effort">Effort: low</span>
+      <span class="badge skill" data-field="skills">Skills: none (직접 실행)</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>실행 규칙</h2>
+    <ul>
+      <li>수정 대상 라인 주변만 읽고, 최소 diff로 즉시 패치한다.</li>
+      <li>문법/린트 확인만 수행하고 불필요한 아키텍처 재구성을 금지한다.</li>
+    </ul>
+  </section>
+
+  <section class="rule-card alert-escalate" data-escalation>
+    <h2>에스컬레이션 기준</h2>
+    <p>동작 로직이 바뀌거나 테스트 실패가 발생하면 즉시 <code>coding.debugging</code> (중위 모델)으로 승격한다.</p>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

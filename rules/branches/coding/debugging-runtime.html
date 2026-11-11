@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime Debugging · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="coding.debugging.runtime"
+      data-parent="coding.debugging"
+      data-depth="3"
+      data-title="런타임 · 로직 버그 수정 (Runtime &amp; Logic)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="targeted-debug"
+      data-pillars="harness,loop"
+      data-keywords="stack trace,nullpointer,typeerror,keyerror,assertion,unit test,예외,스택 트레이스,로직 버그,단위 테스트"
+      data-escalation-policy="effort-first-with-verifier"
+      data-workload="verified_coding"
+      data-escalate-when="attempts>=2|coupled_files>=4">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 3 · Coding Leaf · Mid Tier</div>
+    <h1>런타임 · 로직 버그 수정</h1>
+    <p class="rule-summary">명확한 스택 트레이스나 단위 테스트 실패를 국소 패치로 해결하는 전형적 중위 난이도 말단 분기입니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-mid" data-field="tier">Model Tier: mid (중위 모델 권장)</span>
+      <span class="badge effort-medium" data-field="effort">Effort: medium</span>
+      <span class="badge skill" data-field="skills">Skills: targeted-debug</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>말단 실행 체크리스트</h2>
+    <ul>
+      <li>오류 발생 라인과 직전 호출부(최대 150라인)만 읽어 입력-상태 불일치를 특정한다.</li>
+      <li>경계값(None/빈 리스트/인코딩/오프바이원)을 검증하는 회귀 테스트를 추가한다.</li>
+      <li>2회 실패 내 미해결, 파일 4+ 결합, 또는 단위 테스트 검증기 부재(Modal Ceiling) 시 동일 모델 Effort 반복 대신 <code>debugging-concurrency</code>/<code>architecture</code> 상위 모델로 전환한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

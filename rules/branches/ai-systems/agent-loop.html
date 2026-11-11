@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loop Engineering Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="ai-systems.agent-loop"
+      data-parent="ai-systems.root"
+      data-depth="2"
+      data-title="Loop 중심 설계 (ReAct / Evaluator-Optimizer / Retry)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="targeted-debug,ai-architecture-stack"
+      data-pillars="loop"
+      data-keywords="loop,react,reflexion,evaluator optimizer,self-refine,retry,backpressure,루프,자가수정,반복,피드백,테스트 루프"
+      data-escalation-policy="effort-first-with-verifier"
+      data-workload="verified_coding"
+      data-escalate-when="attempts>=2|unbounded_cycle|multi_worker_needed">
+  <header class="rule-head">
+    <h1>Loop 중심 설계 (ReAct / Evaluator-Optimizer / Retry)</h1>
+    <p class="rule-summary">명확한 검증 기준(테스트·린터·루브릭)을 통과할 때까지 생성→관찰→수정을 반복 수렴시키는 제어 루프입니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>적용 규칙</h2>
+    <ul>
+      <li>모든 루프에는 <strong>명시적 종료 조건</strong>(최대 스텝, 비용 예산, 2회 연속 동일 실패 시 에스컬레이션)을 강제한다.</li>
+      <li>가능하면 LLM 자기평가보다 단위 테스트·타입체크·결정적 검증기(Backpressure)를 루프 게이트로 사용한다(외부 검증 없는 자기성찰은 정답 퇴행 위험 — VERSE/DISC).</li>
+      <li>주관적 품질(번역·문서)은 생성자·검증자·개선자 역할을 별도 컨텍스트/모델로 분리한 Evaluator-Optimizer(MALT 패턴)로 구성한다.</li>
+    </ul>
+  </section>
+
+  <section class="rule-card alert-escalate" data-escalation>
+    <h2>에스컬레이션 기준</h2>
+    <p>분기 수와 상태 전이가 복잡해지거나 사람 승인(HITL)·체크포인트 재개가 필요하면 <code>graph-orch</code> (상위 모델)로 전환한다.</p>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

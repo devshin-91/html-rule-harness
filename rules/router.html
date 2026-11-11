@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rule Router (Root) · HTML Branching Rules</title>
+  <link rel="stylesheet" href="assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="root"
+      data-parent=""
+      data-depth="0"
+      data-title="HTML 분기형 규칙 루트 라우터 (Root Router)"
+      data-tier="low"
+      data-effort="low"
+      data-skills="rule-router"
+      data-pillars="context,harness"
+      data-keywords="root,start,classify,route,분류,시작"
+      data-escalate-when="multi_domain|ambiguous_scope">
+  <header class="rule-head">
+    <h1>HTML 분기형 규칙 루트 라우터</h1>
+    <p class="rule-summary">작업 의도·난이도에 맞는 단일 분기만 탐색해 최소 컨텍스트로 규칙·모델·Skill·AI 기법 스택을 적용합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>공통 불변 규칙</h2>
+    <ul>
+      <li>일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</li>
+      <li>파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</li>
+      <li>표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</li>
+    </ul>
+  </section>
+
+  <nav class="branch-grid" data-children aria-label="1차 분기 선택">
+    <h2>1차 도메인 분기</h2>
+    <a class="branch-link" href="branches/reasoning/index.html" data-target="reasoning.root" data-tier="low"
+       data-when="논증 생성, 논리 요약, 보고서, 다중 주장 비교·종합"><strong>1. 논증 · 문서 · 기획 (Reasoning)</strong></a>
+    <a class="branch-link" href="branches/coding/index.html" data-target="coding.root" data-tier="mid"
+       data-when="코드 작성, 디버깅, 오류 수정, 리팩터링, 아키텍처 설계"><strong>2. 코드 · 디버깅 · 아키텍처 (Coding)</strong></a>
+    <a class="branch-link" href="branches/research/index.html" data-target="research.root" data-tier="mid"
+       data-when="GitHub/웹/논문 탐색, 팩트 검증, reference 문서화"><strong>3. 리서치 · 출처 검증 (Research)</strong></a>
+    <a class="branch-link" href="branches/ai-systems/index.html" data-target="ai-systems.root" data-tier="mid"
+       data-when="AI 유즈케이스: 프롬프트, 컨텍스트/RAG, 하네스, 루프, 그래프 및 기법 조합"><strong>4. AI 유즈케이스 · 기법 스택 (AI Systems)</strong></a>
+    <a class="branch-link" href="branches/meta/index.html" data-target="meta.root" data-tier="mid"
+       data-when="커스텀 분기 규칙 제작, 모델 티어 매핑 조회, 하네스 개선"><strong>5. 커스텀 규칙 · 모델 정책 (Meta)</strong></a>
+  </nav>
+</main>
+<!-- AI-RULE-END -->
+<script src="assets/rule-ui.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Source Audit · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="research.multi-source-audit"
+      data-parent="research.root"
+      data-depth="2"
+      data-title="다중 출처 감사 · 레퍼런스 체계화 (Multi-Source Audit)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="claim-verify"
+      data-pillars="context,loop"
+      data-keywords="github,arxiv,scholar,audit,compare,reference,논문,저장소,교차 검증,문서화"
+      data-escalation-policy="grounding-over-thinking"
+      data-workload="long_context_rag"
+      data-escalate-when="contradictory_papers|synthesis_design">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 2 · Research Leaf · Mid Tier</div>
+    <h1>다중 출처 감사 · 레퍼런스 체계화</h1>
+    <p class="rule-summary">GitHub 저장소, 웹 문서, Liner Scholar 논문을 대조하고 <code>reference/</code>에 구조화하는 중위 분기입니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-mid" data-field="tier">Model Tier: mid (중위 모델 권장)</span>
+      <span class="badge effort-medium" data-field="effort">Effort: medium</span>
+      <span class="badge skill" data-field="skills">Skills: claim-verify</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>실행 규칙</h2>
+    <ul>
+      <li>실제 구현에 기여한 1차 자료(코드·README·논문 원문)만 <code>reference/</code>에 카테고리별 <code>.md</code>로 기록한다.</li>
+      <li>Liner Scholar 실행 전 잔여 크레딧(&gt; 100)을 확인하고, 사용 후 잔액 변화도 기록한다.</li>
+      <li>상충 주장이나 아키텍처 통합 설계가 필요하면 <code>reasoning.deep-synthesis</code> (상위 모델)로 상향한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

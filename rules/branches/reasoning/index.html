@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reasoning Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="reasoning.root"
+      data-parent="root"
+      data-depth="1"
+      data-title="논증 · 문서 · 기획 분기 (Reasoning &amp; Synthesis)"
+      data-tier="low"
+      data-effort="low"
+      data-skills="claim-verify"
+      data-keywords="argument,logic,summary,essay,reasoning,synthesis,counterargument,논증,요약,문서,기획,설득,비교,반론,찬반"
+      data-escalate-when="conflicting_sources|multi_stakeholder_strategy">
+  <header class="rule-head">
+    <h1>논증 · 문서 · 기획 분기</h1>
+    <p class="rule-summary">논증도 복잡도에 따라 하위(low)·중위(mid)·상위(high)와 내부 Effort를 분리합니다. 과잉 숙고를 막고 반론·가정 감사에는 중위 이상을 씁니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>분기 및 Effort 선택 규칙</h2>
+    <ul>
+      <li>단순 3줄 요약·명확한 1차원 논증은 <strong>과잉 추론 역전(arXiv:2504.13367)</strong>을 피하기 위해 <code>low / low</code>를 유지하되, 조건부 비교는 <code>low / effort:medium</code>으로 조정한다.</li>
+      <li>찬반 균형·숨은 가정·반론 검토·설득 논증은 <code>mid</code>(<code>structured-argument</code>), 상충 문헌 교차 종합은 <code>high</code>(<code>deep-synthesis</code>)로 분기한다.</li>
+    </ul>
+  </section>
+
+  <nav class="branch-grid" data-children aria-label="논증 세부 분기">
+    <h2>세부 분기 (Depth 2)</h2>
+    <a class="branch-link" href="simple-argument.html"
+       data-target="reasoning.simple-argument"
+       data-tier="low"
+       data-when="간단한 논증 생성, 단일 주장 정당화, 3줄 핵심 장단점 요약">
+      <strong>1. 간단한 논증 생성 (Simple Argument)</strong>
+      <span>하위 모델(low) · effort low/medium · claim-verify</span>
+    </a>
+    <a class="branch-link" href="structured-argument.html"
+       data-target="reasoning.structured-argument"
+       data-tier="mid"
+       data-when="찬반 균형 논증, 예상 반론·재반박, 숨은 가정/논리 허점 점검, 설득 메모">
+      <strong>2. 구조화 논증 · 반론 검토 (Structured Argument)</strong>
+      <span>중위 모델(mid) · effort medium/high · claim-verify</span>
+    </a>
+    <a class="branch-link" href="deep-synthesis.html"
+       data-target="reasoning.deep-synthesis"
+       data-tier="high"
+       data-when="상충 논문/다중 근거 교차 논증, 고위험 장기 전략, 다축 아키텍처 트레이드오프 종합">
+      <strong>3. 심층 교차 논증 · 전략 종합 (Deep Synthesis)</strong>
+      <span>상위 모델(high) · effort high · claim-verify, architecture-rfc</span>
+    </a>
+  </nav>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

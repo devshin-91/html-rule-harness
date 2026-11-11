@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harness Engineering Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="ai-systems.harness-guard"
+      data-parent="ai-systems.root"
+      data-depth="2"
+      data-title="Harness 중심 설계 (Sandbox / Hooks / Evals)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="harness-propose-probe-compose,ai-architecture-stack"
+      data-pillars="harness"
+      data-keywords="harness,guardrails,sandbox,hooks,evals,middleware,scaffolding,하네스,가드레일,샌드박스,훅,평가,검증"
+      data-escalate-when="production_policy|multi_agent_isolation">
+  <header class="rule-head">
+    <h1>Harness 중심 설계 (Sandbox / Hooks / Evals)</h1>
+    <p class="rule-summary">모델 가중치 변경 없이 툴 인터페이스, Pre/Post 훅, 샌드박스, 결정적 스크립트, Evals로 에이전트 신뢰성을 강제합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>적용 규칙 (Google Harness² 원칙)</h2>
+    <ul>
+      <li>산문 규칙으로만 강제하지 말고 모델이 우회할 수 없는 결정적 훅(`PreToolUse`/`PostToolUse`)과 스키마 검증기를 둔다.</li>
+      <li>생성자와 평가자(Review Subagent / Grader)의 컨텍스트를 분리해 확증 편향을 막는다.</li>
+      <li>반복 기계 작업은 `scripts/*.py`로 내리고, 개선 이력은 `Propose–Probe–Compose`와 경험 라이브러리에 축적한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

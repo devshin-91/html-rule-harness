@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Structured Argument · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="reasoning.structured-argument"
+      data-parent="reasoning.root"
+      data-depth="2"
+      data-title="구조화 논증 · 반론 검토 (Structured Argument)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="claim-verify"
+      data-pillars="prompt,context"
+      data-keywords="structured argument,counterargument,rebuttal,fallacy,policy memo,persuasion,균형 논증,찬반,반론,재반박,숨은 가정,논리 허점,타당성,비교 논증,설득"
+      data-escalation-policy="capacity-switch-sensitive"
+      data-workload="balanced_debate_reasoning"
+      data-escalate-when="conflicting_sources|sycophancy_risk|ambiguity">
+  <header class="rule-head">
+    <h1>구조화 논증 · 반론 검토</h1>
+    <p class="rule-summary">찬반 비교·반론 재반박·숨은 가정/논리 허점 감사가 필요한 논증에 중위 모델과 가변 Effort를 배치합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>실행 규칙 (Balanced Reasoning &amp; Effort Calibration)</h2>
+    <ul>
+      <li><strong>최강 반론 우선(Steelman)</strong>: 주장 → 핵심 근거 → 숨은 가정 → 예상 반론 및 재반박 → 적용 조건 순으로 대칭 붕괴를 막는다.</li>
+      <li><strong>아첨·동조 편향 차단</strong>: 후속 반론 제시 시 근거 없이 입장을 뒤집지 않는다(<code>arXiv:2509.16533</code>). 모호성·다회 반박 시 Effort를 <code>high</code>로 조정한다.</li>
+      <li><strong>외부 검색 그라운딩</strong>: 추론 토큰 증가만으로는 사실 확신 보정이 악화되므로(<code>arXiv:2508.15050</code>) <code>claim-verify</code>로 사실 근거를 확인한다.</li>
+    </ul>
+  </section>
+
+  <section class="rule-card alert-escalate" data-escalation>
+    <h2>에스컬레이션 기준</h2>
+    <p>상충하는 1차 논문/문헌 간 종합 판정이나 고위험 장기 전략이 필요하면 <code>reasoning.deep-synthesis</code>(<code>high</code>)로 승격하고, 단순 3줄 요약·단일 전제 정리는 <code>reasoning.simple-argument</code>(<code>low</code>)로 내린다.</p>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

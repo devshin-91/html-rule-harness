@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="research.root"
+      data-parent="root"
+      data-depth="1"
+      data-title="리서치 · 출처 검증 분기 (Research &amp; Audit)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="claim-verify"
+      data-keywords="research,paper,github,docs,reference,verify,리서치,논문,웹문서,레퍼런스,탐색,검증"
+      data-escalate-when="cross_paper_synthesis|primary_source_conflict">
+  <header class="rule-head">
+    <div class="rule-eyebrow">Depth 1 · Research Trunk</div>
+    <h1>리서치 · 출처 검증 분기</h1>
+    <p class="rule-summary">단일 사실 조회부터 GitHub·웹 문서·학술 논문 교차 검증 및 `reference/` 체계화까지 난이도별로 분기합니다.</p>
+    <div class="rule-badges" data-routing>
+      <span class="badge tier-mid" data-field="tier">Model Tier: mid (기본)</span>
+      <span class="badge effort-medium" data-field="effort">Effort: medium</span>
+      <span class="badge skill" data-field="skills">Skills: claim-verify</span>
+    </div>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>리서치 공통 규칙</h2>
+    <ul>
+      <li>실제로 열람·검증한 저장소, 문서, 논문만 <code>reference/</code>에 체계화하고 URL·식별자를 명시한다.</li>
+      <li>Liner Scholar 호출 전 반드시 잔여 크레딧(&gt; 100)을 먼저 확인하며, 100 이하이면 즉시 중단한다.</li>
+    </ul>
+  </section>
+
+  <nav class="branch-grid" data-children aria-label="리서치 세부 분기">
+    <h2>세부 분기 (Depth 2)</h2>
+    <a class="branch-link" href="fact-lookup.html"
+       data-target="research.fact-lookup"
+       data-tier="low"
+       data-when="단일 API 시그니처, CLI 플래그, 1개 문서 내 팩트 확인">
+      <strong>단일 문서 · 시그니처 조회 (Fact Lookup)</strong>
+      <span>하위 모델(low) · effort low · claim-verify</span>
+    </a>
+    <a class="branch-link" href="multi-source-audit.html"
+       data-target="research.multi-source-audit"
+       data-tier="mid"
+       data-when="GitHub 저장소 비교, 학술 논문 탐색, 다중 문서 교차 검증 및 reference 문서화">
+      <strong>다중 출처 감사 · 레퍼런스 체계화 (Multi-Source Audit)</strong>
+      <span>중위 모델(mid) · effort medium · claim-verify</span>
+    </a>
+  </nav>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

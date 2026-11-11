@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graph Orchestration Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="ai-systems.graph-orch"
+      data-parent="ai-systems.root"
+      data-depth="2"
+      data-title="Graph 중심 오케스트레이션 (Stateful Graph / Multi-Agent)"
+      data-tier="high"
+      data-effort="high"
+      data-skills="architecture-rfc,ai-architecture-stack"
+      data-pillars="graph"
+      data-keywords="graph,langgraph,adk workflow,pydantic graph,multi-agent,fan-out,orchestrator workers,durable,hitl,그래프,상태 전이,멀티에이전트,병렬"
+      data-escalate-when="none">
+  <header class="rule-head">
+    <h1>Graph 중심 오케스트레이션 (Stateful Graph / Multi-Agent)</h1>
+    <p class="rule-summary">순환 상태 전이, 병렬 Fan-out/Fan-in, Orchestrator-Workers, 체크포인팅 및 사람 승인(HITL)이 필요한 복합 워크플로우입니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>적용 규칙</h2>
+    <ul>
+      <li>노드 간 공유 상태(State Schema)를 최소 불변 필드로 타이핑하고, 서브에이전트 출력은 요약 결과만 상위로 반환한다.</li>
+      <li>전이 토폴로지와 권한 경계(Capability Fencing)를 프롬프트가 아닌 결정적 그래프/엔진 계약으로 고정해 환각 라우팅과 무한 루프를 차단한다(GraphBit/AgentSPEX).</li>
+      <li>장기 실행·실패 복구가 필요하면 Durable Execution 체크포인트와 HITL 인터럽트 경계를 명시적으로 배치한다.</li>
+      <li>단순 순차 작업까지 그래프로 감싸지 말고, 조건부 순환·병렬 분기가 있는 구간만 그래프 노드로 모델링한다.</li>
+    </ul>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

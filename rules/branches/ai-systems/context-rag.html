@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Context Engineering Branch · HTML Branching Rules</title>
+  <link rel="stylesheet" href="../../assets/rule-ui.css">
+</head>
+<body>
+<!-- AI-RULE-START -->
+<main class="rule-node"
+      data-rule-id="ai-systems.context-rag"
+      data-parent="ai-systems.root"
+      data-depth="2"
+      data-title="Context 중심 설계 (RAG / Memory / Compaction)"
+      data-tier="mid"
+      data-effort="medium"
+      data-skills="claim-verify,ai-architecture-stack"
+      data-pillars="context"
+      data-keywords="context,rag,graphrag,mem0,memory,compaction,progressive disclosure,컨텍스트,검색,장기 기억,요약 압축,토큰 오염"
+      data-escalation-policy="grounding-over-thinking"
+      data-workload="long_context_rag"
+      data-escalate-when="query_reformulation_loop|global_corpus_graph">
+  <header class="rule-head">
+    <h1>Context 중심 설계 (RAG / Memory / Compaction)</h1>
+    <p class="rule-summary">대용량 문서, 장기 세션 기억, 툴 출력 비대화(Context Rot) 문제를 검색·압축·계층 메모리로 해결합니다.</p>
+  </header>
+
+  <section class="rule-card" data-rules>
+    <h2>적용 규칙</h2>
+    <ul>
+      <li>컨텍스트 창을 유한 예산으로 취급해 정적 문서 덤프 대신 Progressive Disclosure·Top-K 하이브리드 검색(BM25+벡터+엔티티)을 사용한다.</li>
+      <li>장기 실행 시 오래된 툴 결과 제거(Tool-Result Clearing), 요약 압축(Compaction), 세션·사용자 메모리 계층(Mem0 패턴)을 분리한다.</li>
+      <li>단순 사실 조회는 Dense/Hybrid Vector RAG로 처리하고, 검색 누락 시 thinking 토큰을 늘리기보다 리랭커 모델 강화(<code>+7.5 NDCG@10</code>)와 다중 홉만 GraphRAG로 라우팅한다(<code>arXiv:2603.14635</code>).</li>
+    </ul>
+  </section>
+
+  <section class="rule-card alert-escalate" data-escalation>
+    <h2>조합 신호</h2>
+    <p>검색 품질이 1회 조회로 불충분하면 <code>Corrective RAG (Context + Loop)</code> 조합으로 승격한다.</p>
+  </section>
+</main>
+<!-- AI-RULE-END -->
+<script src="../../assets/rule-ui.js" defer></script>
+</body>
+</html>

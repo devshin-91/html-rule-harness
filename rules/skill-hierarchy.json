@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "phases": ["gate", "plan", "execute", "verify"],
+  "skills": {
+    "rule-router": {
+      "hierarchy_tier": 0,
+      "role": "meta-router",
+      "phase": "gate",
+      "min_model_tier": "low",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "harness-propose-probe-compose": {
+      "hierarchy_tier": 0,
+      "role": "meta-improver",
+      "phase": "gate",
+      "min_model_tier": "mid",
+      "requires": ["rule-router"],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "skill-security-audit": {
+      "hierarchy_tier": 0,
+      "role": "security-gate",
+      "phase": "gate",
+      "min_model_tier": "low",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "ai-architecture-stack": {
+      "hierarchy_tier": 1,
+      "role": "lifecycle-planner",
+      "phase": "plan",
+      "min_model_tier": "mid",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "architecture-rfc": {
+      "hierarchy_tier": 1,
+      "role": "lifecycle-architect",
+      "phase": "plan",
+      "min_model_tier": "high",
+      "requires": [],
+      "conflicts_with": ["claim-verify-only"],
+      "trust": "verified-local"
+    },
+    "targeted-debug": {
+      "hierarchy_tier": 2,
+      "role": "domain-executor",
+      "phase": "execute",
+      "min_model_tier": "mid",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "frontier-craft": {
+      "hierarchy_tier": 2,
+      "role": "domain-executor",
+      "phase": "execute",
+      "min_model_tier": "high",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "claim-verify": {
+      "hierarchy_tier": 3,
+      "role": "verifier",
+      "phase": "verify",
+      "min_model_tier": "low",
+      "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    }
+  }
+}
