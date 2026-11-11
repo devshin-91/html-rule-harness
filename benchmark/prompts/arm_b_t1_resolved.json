@@ -1,0 +1,98 @@
+{
+  "chain": [
+    {
+      "rule_id": "root",
+      "title": "HTML 분기형 규칙 루트 라우터 (Root Router)",
+      "depth": 0,
+      "rel_path": "router.html",
+      "ai_bytes": 2619,
+      "rules": [
+        "일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.",
+        "파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.",
+        "표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재)."
+      ]
+    },
+    {
+      "rule_id": "reasoning.root",
+      "title": "논증 · 문서 · 기획 분기 (Reasoning & Synthesis)",
+      "depth": 1,
+      "rel_path": "branches/reasoning/index.html",
+      "ai_bytes": 2745,
+      "rules": [
+        "단순 3줄 요약·명확한 1차원 논증은 과잉 추론 역전(arXiv:2504.13367)을 피하기 위해 low / low를 유지하되, 조건부 비교는 low / effort:medium으로 조정한다.",
+        "찬반 균형·숨은 가정·반론 검토·설득 논증은 mid(structured-argument), 상충 문헌 교차 종합은 high(deep-synthesis)로 분기한다."
+      ]
+    },
+    {
+      "rule_id": "reasoning.simple-argument",
+      "title": "간단한 논증 생성 (Simple Argument)",
+      "depth": 2,
+      "rel_path": "branches/reasoning/simple-argument.html",
+      "ai_bytes": 2274,
+      "rules": [
+        "출력 구조는 전제 → 핵심 근거 → 결론 → 적용 한계(1줄) 순으로 간결하게 유지한다.",
+        "단순 논증에 과잉 CoT를 강제하면 오히려 오류가 증가하므로(arXiv:2502.07266) low를 기본값으로 두고, 다각도 조건 비교 시에만 Effort를 medium으로 상향한다.",
+        "제공되지 않은 수치나 외부 인용을 추측으로 생성하지 않는다."
+      ]
+    }
+  ],
+  "recommendation": {
+    "difficulty_score": 20,
+    "base_tier": "low",
+    "recommended_tier": "low",
+    "recommended_effort": "low",
+    "effort_adjusted": false,
+    "decision_action": "keep_optimal",
+    "action_reason": "단순 과제 과잉 숙고 역전 방지(arXiv:2504.13367)를 위해 기본 티어·Effort 유지",
+    "escalation_policy": "overthinking-guard-low",
+    "workload_profile": "fast_extraction",
+    "has_verifier": true,
+    "recommended_skills": [
+      "claim-verify"
+    ],
+    "recommended_pillars": [
+      "prompt",
+      "harness"
+    ],
+    "escalated": false,
+    "escalation_reasons": [],
+    "skill_pipeline": [
+      {
+        "name": "claim-verify",
+        "hierarchy_tier": 3,
+        "phase": "verify",
+        "role": "verifier",
+        "trust": "verified-local"
+      }
+    ],
+    "model_candidates": [
+      {
+        "provider": "Google Gemini",
+        "model": "gemini-flash-lite",
+        "note": "최소 지연·최저 비용 단건 생성 (thinking minimal/low)"
+      },
+      {
+        "provider": "Anthropic Claude",
+        "model": "claude-haiku",
+        "note": "경량 논리/분류/요약 (effort low)"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5-mini / nano",
+        "note": "단순 편집·구조화 추출 (reasoning.effort low)"
+      }
+    ]
+  },
+  "stats": {
+    "total_nodes": 27,
+    "active_nodes": 3,
+    "total_tree_file_bytes": 67333,
+    "total_tree_ai_bytes": 55577,
+    "active_chain_ai_bytes": 7638,
+    "packet_bytes": 2290,
+    "packet_tokens_est": 636,
+    "total_tree_tokens_est": 18704,
+    "saved_pct": 96.6
+  },
+  "packet_xml": "<active_rule_packet branch=\"reasoning.simple-argument\" depth=\"2\" tier=\"low\" effort=\"low\" skills=\"claim-verify\" pillars=\"prompt,harness\" escalated=\"false\" saved_pct=\"96.6%\">\n  <path>root -> reasoning.root -> reasoning.simple-argument</path>\n  <adaptation action=\"keep_optimal\" policy=\"overthinking-guard-low\" workload=\"fast_extraction\">단순 과제 과잉 숙고 역전 방지(arXiv:2504.13367)를 위해 기본 티어·Effort 유지</adaptation>\n  <model_candidates role=\"reference_examples\" note=\"Map tier/effort to actual models available in user runtime\">gemini-flash-lite, claude-haiku, gpt-5-mini / nano</model_candidates>\n  <skill_pipeline>T3:verify:claim-verify</skill_pipeline>\n  <rules>\n    <r src=\"root\">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>\n    <r src=\"root\">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>\n    <r src=\"root\">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>\n    <r src=\"reasoning.root\">단순 3줄 요약·명확한 1차원 논증은 과잉 추론 역전(arXiv:2504.13367)을 피하기 위해 low / low를 유지하되, 조건부 비교는 low / effort:medium으로 조정한다.</r>\n    <r src=\"reasoning.root\">찬반 균형·숨은 가정·반론 검토·설득 논증은 mid(structured-argument), 상충 문헌 교차 종합은 high(deep-synthesis)로 분기한다.</r>\n    <r src=\"reasoning.simple-argument\">출력 구조는 전제 → 핵심 근거 → 결론 → 적용 한계(1줄) 순으로 간결하게 유지한다.</r>\n    <r src=\"reasoning.simple-argument\">단순 논증에 과잉 CoT를 강제하면 오히려 오류가 증가하므로(arXiv:2502.07266) low를 기본값으로 두고, 다각도 조건 비교 시에만 Effort를 medium으로 상향한다.</r>\n    <r src=\"reasoning.simple-argument\">제공되지 않은 수치나 외부 인용을 추측으로 생성하지 않는다.</r>\n  </rules>\n  <escalate_if>반론 재반박·숨은 가정 감사가 필요하면 reasoning.structured-argument(중위 모델)로, 상충 문헌 교차 종합은 reasoning.deep-synthesis(상위 모델)로 전환한다.</escalate_if>\n</active_rule_packet>"
+}

@@ -1,0 +1,20 @@
+<active_rule_packet branch="coding.debugging.runtime" depth="3" tier="mid" effort="high" skills="targeted-debug" pillars="harness,loop" escalated="false" saved_pct="96.3%">
+  <path>root -> coding.root -> coding.debugging -> coding.debugging.runtime</path>
+  <adaptation action="raise_effort" policy="effort-first-with-verifier" workload="verified_coding">외부 검증기(테스트/린터) 또는 경미한 조건 상승 구간 — 모델 유지 후 동일 티어 내 Effort 우선 상향</adaptation>
+  <model_candidates role="reference_examples" note="Map tier/effort to actual models available in user runtime">gemini-flash (High/Medium), claude-sonnet, gpt-5 / codex-medium</model_candidates>
+  <skill_pipeline>T2:execute:targeted-debug</skill_pipeline>
+  <escalation_reasons>multi_file=2; effort_adjusted:medium->high</escalation_reasons>
+  <rules>
+    <r src="root">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>
+    <r src="root">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>
+    <r src="root">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>
+    <r src="coding.root">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>
+    <r src="coding.root">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>
+    <r src="coding.debugging">수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.</r>
+    <r src="coding.debugging">원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.</r>
+    <r src="coding.debugging">수정 후 실패 테스트 + 회귀 테스트를 재실행한다.</r>
+    <r src="coding.debugging.runtime">오류 발생 라인과 직전 호출부(최대 150라인)만 읽어 입력-상태 불일치를 특정한다.</r>
+    <r src="coding.debugging.runtime">경계값(None/빈 리스트/인코딩/오프바이원)을 검증하는 회귀 테스트를 추가한다.</r>
+    <r src="coding.debugging.runtime">2회 실패 내 미해결, 파일 4+ 결합, 또는 단위 테스트 검증기 부재(Modal Ceiling) 시 동일 모델 Effort 반복 대신 debugging-concurrency/architecture 상위 모델로 전환한다.</r>
+  </rules>
+</active_rule_packet>

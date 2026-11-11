@@ -1,0 +1,20 @@
+<active_rule_packet branch="coding.debugging.concurrency" depth="3" tier="high" effort="high" skills="architecture-rfc,targeted-debug" pillars="harness,loop,graph" escalated="false" saved_pct="96.4%">
+  <path>root -> coding.root -> coding.debugging -> coding.debugging.concurrency</path>
+  <adaptation action="keep_optimal" policy="capacity-switch-sensitive" workload="frontier_architecture_visual">현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지</adaptation>
+  <model_candidates role="reference_examples" note="Map tier/effort to actual models available in user runtime">gemini-pro, claude-opus, gpt-5-pro / reasoning-high</model_candidates>
+  <skill_pipeline>T1:plan:architecture-rfc -> T2:execute:targeted-debug</skill_pipeline>
+  <escalation_reasons>coupled_files=4 (>=4); retry_attempt=1; concurrency_or_async_race</escalation_reasons>
+  <rules>
+    <r src="root">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>
+    <r src="root">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>
+    <r src="root">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>
+    <r src="coding.root">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>
+    <r src="coding.root">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>
+    <r src="coding.debugging">수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.</r>
+    <r src="coding.debugging">원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.</r>
+    <r src="coding.debugging">수정 후 실패 테스트 + 회귀 테스트를 재실행한다.</r>
+    <r src="coding.debugging.concurrency">상태 전이(State Transition), 락 획득 순서, 비동기 취소/타임아웃 경계를 먼저 표로 도식화한다.</r>
+    <r src="coding.debugging.concurrency">임시 `sleep`으로 타이밍을 회피하지 말고 결정적 동기화/원자적 연산으로 원인을 제거한다.</r>
+    <r src="coding.debugging.concurrency">반복 스트레스 테스트(N회 루프)로 간헐적 실패 재현·소멸을 확인한다.</r>
+  </rules>
+</active_rule_packet>

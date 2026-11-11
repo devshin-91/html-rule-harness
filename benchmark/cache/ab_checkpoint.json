@@ -1,0 +1,332 @@
+{
+  "benchmark_id": "harness2-html-rule-ab-v1",
+  "created_at": "2026-11-11T21:42:22.670705+00:00",
+  "updated_at": "2026-11-11T21:46:03.987097+00:00",
+  "baseline_model": "gemini-4-argon-medium",
+  "quota_snapshots": [
+    {
+      "time_kst": "2026-11-12T06:27:40+09:00",
+      "phase": "pre_session_switch",
+      "gemini_3_8_flash_5h": "12%",
+      "gemini_4_argon_7d": "100%",
+      "claude_opus_sonnet": "100%"
+    },
+    {
+      "time_kst": "2026-11-12T06:37:21+09:00",
+      "phase": "pre_benchmark_init",
+      "gemini_3_8_flash_5h": "10%",
+      "gemini_4_argon_7d": "95%",
+      "claude_opus_sonnet": "0%"
+    },
+    {
+      "time_kst": "2026-11-12T06:38:39+09:00",
+      "phase": "pre_workers_spawn",
+      "gemini_3_8_flash_5h": "10%",
+      "gemini_4_argon_7d": "95%",
+      "claude_opus_sonnet": "0%"
+    },
+    {
+      "time_kst": "2026-11-12T06:45:42+09:00",
+      "phase": "post_8_workers_complete",
+      "gemini_3_8_flash_5h": "9%",
+      "gemini_4_argon_7d": "93%",
+      "claude_opus_sonnet": "0%"
+    }
+  ],
+  "arms": {
+    "A": {
+      "description": "Google Harness² Only (Fixed Gemini 4 Argon Medium, Un-routed Full Rules)",
+      "tasks": {
+        "T1": {
+          "id": "T1",
+          "title": "쿼터 가드레일 정책 찬반 3줄 요약 및 경계 조건 논증",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-medium",
+          "branch": "unrouted_all_27_nodes",
+          "recommended_tier": "mid (fixed)",
+          "recommended_effort": "medium (fixed)",
+          "decision_action": "fixed_baseline",
+          "rule_context_bytes": 55577,
+          "rule_context_tokens_est": 18704,
+          "rule_context_saved_pct": 0.0,
+          "telemetry": {
+            "conversation_id": "755cd49a-fad7-42d1-9f5d-6ee6a16ecd25",
+            "planner_steps": 2,
+            "input_tokens": 26164,
+            "cache_read_tokens": 12395,
+            "output_tokens": 1431,
+            "total_tokens": 39990,
+            "active_tokens_non_cached": 27595,
+            "elapsed_seconds": 27.0
+          },
+          "verification": {
+            "score": 20,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "structure_ok(+10)",
+              "verbose_lines=18(+5)",
+              "boundary_condition_ok(+5)"
+            ]
+          }
+        },
+        "T2": {
+          "id": "T2",
+          "title": "TaskSpec 및 QuotaBucket 스키마 검증기 빠른 코드 수정",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-medium",
+          "branch": "unrouted_all_27_nodes",
+          "recommended_tier": "mid (fixed)",
+          "recommended_effort": "medium (fixed)",
+          "decision_action": "fixed_baseline",
+          "rule_context_bytes": 55577,
+          "rule_context_tokens_est": 18704,
+          "rule_context_saved_pct": 0.0,
+          "telemetry": {
+            "conversation_id": "1a581bdd-10e2-4016-b1d7-e0580612459f",
+            "planner_steps": 4,
+            "input_tokens": 31879,
+            "cache_read_tokens": 65210,
+            "output_tokens": 1444,
+            "total_tokens": 98533,
+            "active_tokens_non_cached": 33323,
+            "elapsed_seconds": 40.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "unit_tests_passed(+20)",
+              "docstrings_preserved(+5)"
+            ]
+          }
+        },
+        "T3": {
+          "id": "T3",
+          "title": "task_queue.py 런타임 버그 3건 디버깅 및 단위/회귀 테스트",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-medium",
+          "branch": "unrouted_all_27_nodes",
+          "recommended_tier": "mid (fixed)",
+          "recommended_effort": "medium (fixed)",
+          "decision_action": "fixed_baseline",
+          "rule_context_bytes": 55577,
+          "rule_context_tokens_est": 18704,
+          "rule_context_saved_pct": 0.0,
+          "telemetry": {
+            "conversation_id": "f573a45d-f9d7-4af9-a19d-5e23f9115723",
+            "planner_steps": 5,
+            "input_tokens": 35747,
+            "cache_read_tokens": 93288,
+            "output_tokens": 1805,
+            "total_tokens": 130840,
+            "active_tokens_non_cached": 37552,
+            "elapsed_seconds": 58.0
+          },
+          "verification": {
+            "score": 22,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "unit_tests_passed(+18)",
+              "base_tests_only(+4)"
+            ]
+          }
+        },
+        "T4": {
+          "id": "T4",
+          "title": "async_quota_pool.py 비동기 동시성 레이스 컨디션 디버깅 및 아키텍처 검증",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-medium",
+          "branch": "unrouted_all_27_nodes",
+          "recommended_tier": "mid (fixed)",
+          "recommended_effort": "medium (fixed)",
+          "decision_action": "fixed_baseline",
+          "rule_context_bytes": 55577,
+          "rule_context_tokens_est": 18704,
+          "rule_context_saved_pct": 0.0,
+          "telemetry": {
+            "conversation_id": "07b0632b-3a23-4a07-9410-91d7279344c1",
+            "planner_steps": 5,
+            "input_tokens": 35324,
+            "cache_read_tokens": 95798,
+            "output_tokens": 1754,
+            "total_tokens": 132876,
+            "active_tokens_non_cached": 37078,
+            "elapsed_seconds": 90.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "concurrency_stress_passed(+15)",
+              "atomic_lock_used(+5)",
+              "state_transition_table_documented(+5)"
+            ]
+          }
+        }
+      },
+      "summary": {
+        "rule_context_tokens_total": 74816,
+        "input_tokens_total": 129114,
+        "cache_read_tokens_total": 266691,
+        "output_tokens_total": 6434,
+        "total_tokens": 402239,
+        "active_tokens_non_cached": 135548,
+        "cumulative_elapsed_seconds": 215.0,
+        "parallel_wall_seconds": 90.0,
+        "quality_score": 92,
+        "max_quality_score": 100
+      }
+    },
+    "B": {
+      "description": "Google Harness² + HTML Branching Rule System (Dynamic Model/Effort + Active Rule Packet)",
+      "tasks": {
+        "T1": {
+          "id": "T1",
+          "title": "쿼터 가드레일 정책 찬반 3줄 요약 및 경계 조건 논증",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-low",
+          "branch": "reasoning.simple-argument",
+          "recommended_tier": "low",
+          "recommended_effort": "low",
+          "decision_action": "keep_optimal",
+          "rule_context_bytes": 2290,
+          "rule_context_tokens_est": 636,
+          "rule_context_saved_pct": 96.6,
+          "telemetry": {
+            "conversation_id": "6f1b22be-33df-433e-bc38-7b9d9d10730b",
+            "planner_steps": 3,
+            "input_tokens": 17942,
+            "cache_read_tokens": 21603,
+            "output_tokens": 565,
+            "total_tokens": 40110,
+            "active_tokens_non_cached": 18507,
+            "elapsed_seconds": 17.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "structure_ok(+10)",
+              "concise_lines=5(+10)",
+              "boundary_condition_ok(+5)"
+            ]
+          }
+        },
+        "T2": {
+          "id": "T2",
+          "title": "TaskSpec 및 QuotaBucket 스키마 검증기 빠른 코드 수정",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-low",
+          "branch": "coding.quick-edit",
+          "recommended_tier": "low",
+          "recommended_effort": "low",
+          "decision_action": "keep_optimal",
+          "rule_context_bytes": 1700,
+          "rule_context_tokens_est": 472,
+          "rule_context_saved_pct": 97.5,
+          "telemetry": {
+            "conversation_id": "b7dad8cd-180f-4367-b469-8180a249c6ea",
+            "planner_steps": 5,
+            "input_tokens": 21816,
+            "cache_read_tokens": 52719,
+            "output_tokens": 1611,
+            "total_tokens": 76146,
+            "active_tokens_non_cached": 23427,
+            "elapsed_seconds": 53.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "unit_tests_passed(+20)",
+              "docstrings_preserved(+5)"
+            ]
+          }
+        },
+        "T3": {
+          "id": "T3",
+          "title": "task_queue.py 런타임 버그 3건 디버깅 및 단위/회귀 테스트",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-medium",
+          "branch": "coding.debugging.runtime",
+          "recommended_tier": "mid",
+          "recommended_effort": "high",
+          "decision_action": "raise_effort",
+          "rule_context_bytes": 2479,
+          "rule_context_tokens_est": 689,
+          "rule_context_saved_pct": 96.3,
+          "telemetry": {
+            "conversation_id": "c36d442f-c300-4a80-879d-c3314f10dd35",
+            "planner_steps": 5,
+            "input_tokens": 23185,
+            "cache_read_tokens": 59888,
+            "output_tokens": 3479,
+            "total_tokens": 86552,
+            "active_tokens_non_cached": 26664,
+            "elapsed_seconds": 65.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "unit_tests_passed(+18)",
+              "added_regression_tests(count=4)(+7)"
+            ]
+          }
+        },
+        "T4": {
+          "id": "T4",
+          "title": "async_quota_pool.py 비동기 동시성 레이스 컨디션 디버깅 및 아키텍처 검증",
+          "status": "completed",
+          "model_slug": "gemini-4-argon-high",
+          "branch": "coding.debugging.concurrency",
+          "recommended_tier": "high",
+          "recommended_effort": "high",
+          "decision_action": "keep_optimal",
+          "rule_context_bytes": 2434,
+          "rule_context_tokens_est": 676,
+          "rule_context_saved_pct": 96.4,
+          "telemetry": {
+            "conversation_id": "e4f2963a-b3af-4ba5-a67e-5da908fdf095",
+            "planner_steps": 4,
+            "input_tokens": 22366,
+            "cache_read_tokens": 46102,
+            "output_tokens": 4988,
+            "total_tokens": 73456,
+            "active_tokens_non_cached": 27354,
+            "elapsed_seconds": 89.0
+          },
+          "verification": {
+            "score": 25,
+            "max_score": 25,
+            "passed": true,
+            "notes": [
+              "concurrency_stress_passed(+15)",
+              "atomic_lock_used(+5)",
+              "state_transition_table_documented(+5)"
+            ]
+          }
+        }
+      },
+      "summary": {
+        "rule_context_tokens_total": 2473,
+        "input_tokens_total": 85309,
+        "cache_read_tokens_total": 180312,
+        "output_tokens_total": 10643,
+        "total_tokens": 276264,
+        "active_tokens_non_cached": 95952,
+        "cumulative_elapsed_seconds": 224.0,
+        "parallel_wall_seconds": 89.0,
+        "quality_score": 100,
+        "max_quality_score": 100
+      }
+    }
+  }
+}

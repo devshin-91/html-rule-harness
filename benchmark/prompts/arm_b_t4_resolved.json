@@ -1,0 +1,123 @@
+{
+  "chain": [
+    {
+      "rule_id": "root",
+      "title": "HTML 분기형 규칙 루트 라우터 (Root Router)",
+      "depth": 0,
+      "rel_path": "router.html",
+      "ai_bytes": 2619,
+      "rules": [
+        "일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.",
+        "파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.",
+        "표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재)."
+      ]
+    },
+    {
+      "rule_id": "coding.root",
+      "title": "코드 · 디버깅 · 아키텍처 분기 (Coding & Engineering)",
+      "depth": 1,
+      "rel_path": "branches/coding/index.html",
+      "ai_bytes": 2755,
+      "rules": [
+        "전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.",
+        "기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다."
+      ]
+    },
+    {
+      "rule_id": "coding.debugging",
+      "title": "디버깅 · 코드 수정 (Debugging & Patch)",
+      "depth": 2,
+      "rel_path": "branches/coding/debugging.html",
+      "ai_bytes": 2252,
+      "rules": [
+        "수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.",
+        "원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.",
+        "수정 후 실패 테스트 + 회귀 테스트를 재실행한다."
+      ]
+    },
+    {
+      "rule_id": "coding.debugging.concurrency",
+      "title": "동시성 · 비동기 · 분산 버그 (Concurrency & Race)",
+      "depth": 3,
+      "rel_path": "branches/coding/debugging-concurrency.html",
+      "ai_bytes": 1827,
+      "rules": [
+        "상태 전이(State Transition), 락 획득 순서, 비동기 취소/타임아웃 경계를 먼저 표로 도식화한다.",
+        "임시 `sleep`으로 타이밍을 회피하지 말고 결정적 동기화/원자적 연산으로 원인을 제거한다.",
+        "반복 스트레스 테스트(N회 루프)로 간헐적 실패 재현·소멸을 확인한다."
+      ]
+    }
+  ],
+  "recommendation": {
+    "difficulty_score": 100,
+    "base_tier": "high",
+    "recommended_tier": "high",
+    "recommended_effort": "high",
+    "effort_adjusted": false,
+    "decision_action": "keep_optimal",
+    "action_reason": "현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지",
+    "escalation_policy": "capacity-switch-sensitive",
+    "workload_profile": "frontier_architecture_visual",
+    "has_verifier": true,
+    "recommended_skills": [
+      "architecture-rfc",
+      "targeted-debug"
+    ],
+    "recommended_pillars": [
+      "harness",
+      "loop",
+      "graph"
+    ],
+    "escalated": false,
+    "escalation_reasons": [
+      "coupled_files=4 (>=4)",
+      "retry_attempt=1",
+      "concurrency_or_async_race"
+    ],
+    "skill_pipeline": [
+      {
+        "name": "architecture-rfc",
+        "hierarchy_tier": 1,
+        "phase": "plan",
+        "role": "lifecycle-architect",
+        "trust": "verified-local"
+      },
+      {
+        "name": "targeted-debug",
+        "hierarchy_tier": 2,
+        "phase": "execute",
+        "role": "domain-executor",
+        "trust": "verified-local"
+      }
+    ],
+    "model_candidates": [
+      {
+        "provider": "Google Gemini",
+        "model": "gemini-pro",
+        "note": "고난도 추론·상충 문헌 교차·아키텍처 설계 (thinking high)"
+      },
+      {
+        "provider": "Anthropic Claude",
+        "model": "claude-opus",
+        "note": "복합 트레이드오프·고위험 설계 (명세 명확 시 medium, 동시성/보안 시 high)"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5-pro / reasoning-high",
+        "note": "고위험 동시성·대규모 마이그레이션 (reasoning.effort high/xhigh)"
+      }
+    ]
+  },
+  "stats": {
+    "total_nodes": 27,
+    "active_nodes": 4,
+    "total_tree_file_bytes": 67333,
+    "total_tree_ai_bytes": 55577,
+    "active_chain_ai_bytes": 9453,
+    "packet_bytes": 2434,
+    "packet_tokens_est": 676,
+    "total_tree_tokens_est": 18704,
+    "saved_pct": 96.4
+  },
+  "packet_xml": "<active_rule_packet branch=\"coding.debugging.concurrency\" depth=\"3\" tier=\"high\" effort=\"high\" skills=\"architecture-rfc,targeted-debug\" pillars=\"harness,loop,graph\" escalated=\"false\" saved_pct=\"96.4%\">\n  <path>root -> coding.root -> coding.debugging -> coding.debugging.concurrency</path>\n  <adaptation action=\"keep_optimal\" policy=\"capacity-switch-sensitive\" workload=\"frontier_architecture_visual\">현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지</adaptation>\n  <model_candidates role=\"reference_examples\" note=\"Map tier/effort to actual models available in user runtime\">gemini-pro, claude-opus, gpt-5-pro / reasoning-high</model_candidates>\n  <skill_pipeline>T1:plan:architecture-rfc -> T2:execute:targeted-debug</skill_pipeline>\n  <escalation_reasons>coupled_files=4 (>=4); retry_attempt=1; concurrency_or_async_race</escalation_reasons>\n  <rules>\n    <r src=\"root\">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>\n    <r src=\"root\">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>\n    <r src=\"root\">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>\n    <r src=\"coding.root\">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>\n    <r src=\"coding.root\">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>\n    <r src=\"coding.debugging\">수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.</r>\n    <r src=\"coding.debugging\">원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.</r>\n    <r src=\"coding.debugging\">수정 후 실패 테스트 + 회귀 테스트를 재실행한다.</r>\n    <r src=\"coding.debugging.concurrency\">상태 전이(State Transition), 락 획득 순서, 비동기 취소/타임아웃 경계를 먼저 표로 도식화한다.</r>\n    <r src=\"coding.debugging.concurrency\">임시 `sleep`으로 타이밍을 회피하지 말고 결정적 동기화/원자적 연산으로 원인을 제거한다.</r>\n    <r src=\"coding.debugging.concurrency\">반복 스트레스 테스트(N회 루프)로 간헐적 실패 재현·소멸을 확인한다.</r>\n  </rules>\n</active_rule_packet>"
+}

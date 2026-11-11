@@ -1,0 +1,88 @@
+{
+  "inspector_model": "Gemini 4 Argon (High)",
+  "A": {
+    "arm": "A",
+    "subtasks": {
+      "T1": {
+        "strict_score": 14,
+        "max_score": 25,
+        "non_empty_lines": 18,
+        "char_count": 2044,
+        "cross_branch_bleed_terms": [
+          "PreToolUse",
+          "Swarm/Graph",
+          "Context Rot",
+          "Unbounded Retry Loop"
+        ]
+      },
+      "T2": {
+        "strict_score": 25,
+        "max_score": 25,
+        "adversarial_checks_passed": "6/6",
+        "comments_and_docstrings_preserved": true
+      },
+      "T3": {
+        "strict_score": 18,
+        "max_score": 25,
+        "caller_list_mutation_isolated": true,
+        "zero_retry_boundary_ok": true,
+        "comments_preserved": true,
+        "unit_test_methods_count": 3,
+        "regression_test_added": false
+      },
+      "T4": {
+        "strict_score": 14,
+        "max_score": 25,
+        "cancelled_error_rollback_passed": true,
+        "seed_comments_preserved": false,
+        "context_switch_yield_preserved_in_lock": false,
+        "full_state_lock_cancellation_table": false
+      }
+    },
+    "strict_total_score": 71,
+    "total_tokens": 402239,
+    "input_tokens": 129114,
+    "strict_score_per_10k_total_tokens": 1.77,
+    "strict_score_per_10k_input_tokens": 5.5
+  },
+  "B": {
+    "arm": "B",
+    "subtasks": {
+      "T1": {
+        "strict_score": 25,
+        "max_score": 25,
+        "non_empty_lines": 5,
+        "char_count": 485,
+        "cross_branch_bleed_terms": []
+      },
+      "T2": {
+        "strict_score": 25,
+        "max_score": 25,
+        "adversarial_checks_passed": "6/6",
+        "comments_and_docstrings_preserved": true
+      },
+      "T3": {
+        "strict_score": 25,
+        "max_score": 25,
+        "caller_list_mutation_isolated": true,
+        "zero_retry_boundary_ok": true,
+        "comments_preserved": true,
+        "unit_test_methods_count": 4,
+        "regression_test_added": true
+      },
+      "T4": {
+        "strict_score": 25,
+        "max_score": 25,
+        "cancelled_error_rollback_passed": true,
+        "seed_comments_preserved": true,
+        "context_switch_yield_preserved_in_lock": true,
+        "full_state_lock_cancellation_table": true
+      }
+    },
+    "strict_total_score": 100,
+    "total_tokens": 276264,
+    "input_tokens": 85309,
+    "strict_score_per_10k_total_tokens": 3.62,
+    "strict_score_per_10k_input_tokens": 11.72
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "chain": [
+    {
+      "rule_id": "root",
+      "title": "HTML 분기형 규칙 루트 라우터 (Root Router)",
+      "depth": 0,
+      "rel_path": "router.html",
+      "ai_bytes": 2619,
+      "rules": [
+        "일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.",
+        "파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.",
+        "표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재)."
+      ]
+    },
+    {
+      "rule_id": "coding.root",
+      "title": "코드 · 디버깅 · 아키텍처 분기 (Coding & Engineering)",
+      "depth": 1,
+      "rel_path": "branches/coding/index.html",
+      "ai_bytes": 2755,
+      "rules": [
+        "전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.",
+        "기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다."
+      ]
+    },
+    {
+      "rule_id": "coding.quick-edit",
+      "title": "단순 편집 · 보일러플레이트 (Quick Edit)",
+      "depth": 2,
+      "rel_path": "branches/coding/quick-edit.html",
+      "ai_bytes": 1761,
+      "rules": [
+        "수정 대상 라인 주변만 읽고, 최소 diff로 즉시 패치한다.",
+        "문법/린트 확인만 수행하고 불필요한 아키텍처 재구성을 금지한다."
+      ]
+    }
+  ],
+  "recommendation": {
+    "difficulty_score": 20,
+    "base_tier": "low",
+    "recommended_tier": "low",
+    "recommended_effort": "low",
+    "effort_adjusted": false,
+    "decision_action": "keep_optimal",
+    "action_reason": "현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지",
+    "escalation_policy": "effort-first-with-verifier",
+    "workload_profile": "fast_extraction",
+    "has_verifier": true,
+    "recommended_skills": [],
+    "recommended_pillars": [
+      "prompt"
+    ],
+    "escalated": false,
+    "escalation_reasons": [],
+    "skill_pipeline": [],
+    "model_candidates": [
+      {
+        "provider": "Google Gemini",
+        "model": "gemini-flash-lite",
+        "note": "최소 지연·최저 비용 단건 생성 (thinking minimal/low)"
+      },
+      {
+        "provider": "Anthropic Claude",
+        "model": "claude-haiku",
+        "note": "경량 논리/분류/요약 (effort low)"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5-mini / nano",
+        "note": "단순 편집·구조화 추출 (reasoning.effort low)"
+      }
+    ]
+  },
+  "stats": {
+    "total_nodes": 27,
+    "active_nodes": 3,
+    "total_tree_file_bytes": 67333,
+    "total_tree_ai_bytes": 55577,
+    "active_chain_ai_bytes": 7135,
+    "packet_bytes": 1700,
+    "packet_tokens_est": 472,
+    "total_tree_tokens_est": 18704,
+    "saved_pct": 97.5
+  },
+  "packet_xml": "<active_rule_packet branch=\"coding.quick-edit\" depth=\"2\" tier=\"low\" effort=\"low\" skills=\"\" pillars=\"prompt\" escalated=\"false\" saved_pct=\"97.5%\">\n  <path>root -> coding.root -> coding.quick-edit</path>\n  <adaptation action=\"keep_optimal\" policy=\"effort-first-with-verifier\" workload=\"fast_extraction\">현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지</adaptation>\n  <model_candidates role=\"reference_examples\" note=\"Map tier/effort to actual models available in user runtime\">gemini-flash-lite, claude-haiku, gpt-5-mini / nano</model_candidates>\n  <rules>\n    <r src=\"root\">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>\n    <r src=\"root\">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>\n    <r src=\"root\">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>\n    <r src=\"coding.root\">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>\n    <r src=\"coding.root\">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>\n    <r src=\"coding.quick-edit\">수정 대상 라인 주변만 읽고, 최소 diff로 즉시 패치한다.</r>\n    <r src=\"coding.quick-edit\">문법/린트 확인만 수행하고 불필요한 아키텍처 재구성을 금지한다.</r>\n  </rules>\n  <escalate_if>동작 로직이 바뀌거나 테스트 실패가 발생하면 즉시 coding.debugging (중위 모델)으로 승격한다.</escalate_if>\n</active_rule_packet>"
+}

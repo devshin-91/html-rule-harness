@@ -1,0 +1,113 @@
+{
+  "chain": [
+    {
+      "rule_id": "root",
+      "title": "HTML 분기형 규칙 루트 라우터 (Root Router)",
+      "depth": 0,
+      "rel_path": "router.html",
+      "ai_bytes": 2619,
+      "rules": [
+        "일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.",
+        "파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.",
+        "표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재)."
+      ]
+    },
+    {
+      "rule_id": "coding.root",
+      "title": "코드 · 디버깅 · 아키텍처 분기 (Coding & Engineering)",
+      "depth": 1,
+      "rel_path": "branches/coding/index.html",
+      "ai_bytes": 2755,
+      "rules": [
+        "전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.",
+        "기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다."
+      ]
+    },
+    {
+      "rule_id": "coding.debugging",
+      "title": "디버깅 · 코드 수정 (Debugging & Patch)",
+      "depth": 2,
+      "rel_path": "branches/coding/debugging.html",
+      "ai_bytes": 2252,
+      "rules": [
+        "수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.",
+        "원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.",
+        "수정 후 실패 테스트 + 회귀 테스트를 재실행한다."
+      ]
+    },
+    {
+      "rule_id": "coding.debugging.runtime",
+      "title": "런타임 · 로직 버그 수정 (Runtime & Logic)",
+      "depth": 3,
+      "rel_path": "branches/coding/debugging-runtime.html",
+      "ai_bytes": 1883,
+      "rules": [
+        "오류 발생 라인과 직전 호출부(최대 150라인)만 읽어 입력-상태 불일치를 특정한다.",
+        "경계값(None/빈 리스트/인코딩/오프바이원)을 검증하는 회귀 테스트를 추가한다.",
+        "2회 실패 내 미해결, 파일 4+ 결합, 또는 단위 테스트 검증기 부재(Modal Ceiling) 시 동일 모델 Effort 반복 대신 debugging-concurrency/architecture 상위 모델로 전환한다."
+      ]
+    }
+  ],
+  "recommendation": {
+    "difficulty_score": 60,
+    "base_tier": "mid",
+    "recommended_tier": "mid",
+    "recommended_effort": "high",
+    "effort_adjusted": true,
+    "decision_action": "raise_effort",
+    "action_reason": "외부 검증기(테스트/린터) 또는 경미한 조건 상승 구간 — 모델 유지 후 동일 티어 내 Effort 우선 상향",
+    "escalation_policy": "effort-first-with-verifier",
+    "workload_profile": "verified_coding",
+    "has_verifier": true,
+    "recommended_skills": [
+      "targeted-debug"
+    ],
+    "recommended_pillars": [
+      "harness",
+      "loop"
+    ],
+    "escalated": false,
+    "escalation_reasons": [
+      "multi_file=2",
+      "effort_adjusted:medium->high"
+    ],
+    "skill_pipeline": [
+      {
+        "name": "targeted-debug",
+        "hierarchy_tier": 2,
+        "phase": "execute",
+        "role": "domain-executor",
+        "trust": "verified-local"
+      }
+    ],
+    "model_candidates": [
+      {
+        "provider": "Google Gemini",
+        "model": "gemini-flash (High/Medium)",
+        "note": "균형 잡힌 코드 루프 · 1M 컨텍스트 수집(thinking medium/high)"
+      },
+      {
+        "provider": "Anthropic Claude",
+        "model": "claude-sonnet",
+        "note": "안정적 디버깅·구조화 논증 (adaptive high 초과 시 Opus medium 전환)"
+      },
+      {
+        "provider": "OpenAI",
+        "model": "gpt-5 / codex-medium",
+        "note": "테스트 기반 수정 및 논거 검증 (reasoning.effort medium/high)"
+      }
+    ]
+  },
+  "stats": {
+    "total_nodes": 27,
+    "active_nodes": 4,
+    "total_tree_file_bytes": 67333,
+    "total_tree_ai_bytes": 55577,
+    "active_chain_ai_bytes": 9509,
+    "packet_bytes": 2479,
+    "packet_tokens_est": 689,
+    "total_tree_tokens_est": 18704,
+    "saved_pct": 96.3
+  },
+  "packet_xml": "<active_rule_packet branch=\"coding.debugging.runtime\" depth=\"3\" tier=\"mid\" effort=\"high\" skills=\"targeted-debug\" pillars=\"harness,loop\" escalated=\"false\" saved_pct=\"96.3%\">\n  <path>root -> coding.root -> coding.debugging -> coding.debugging.runtime</path>\n  <adaptation action=\"raise_effort\" policy=\"effort-first-with-verifier\" workload=\"verified_coding\">외부 검증기(테스트/린터) 또는 경미한 조건 상승 구간 — 모델 유지 후 동일 티어 내 Effort 우선 상향</adaptation>\n  <model_candidates role=\"reference_examples\" note=\"Map tier/effort to actual models available in user runtime\">gemini-flash (High/Medium), claude-sonnet, gpt-5 / codex-medium</model_candidates>\n  <skill_pipeline>T2:execute:targeted-debug</skill_pipeline>\n  <escalation_reasons>multi_file=2; effort_adjusted:medium->high</escalation_reasons>\n  <rules>\n    <r src=\"root\">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>\n    <r src=\"root\">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>\n    <r src=\"root\">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>\n    <r src=\"coding.root\">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>\n    <r src=\"coding.root\">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>\n    <r src=\"coding.debugging\">수정 전 최소 재현 커맨드/테스트로 실제 오류 원인을 먼저 확인한다.</r>\n    <r src=\"coding.debugging\">원인 지점만 최소 변경하고 무관한 주변 리팩터링을 금지한다.</r>\n    <r src=\"coding.debugging\">수정 후 실패 테스트 + 회귀 테스트를 재실행한다.</r>\n    <r src=\"coding.debugging.runtime\">오류 발생 라인과 직전 호출부(최대 150라인)만 읽어 입력-상태 불일치를 특정한다.</r>\n    <r src=\"coding.debugging.runtime\">경계값(None/빈 리스트/인코딩/오프바이원)을 검증하는 회귀 테스트를 추가한다.</r>\n    <r src=\"coding.debugging.runtime\">2회 실패 내 미해결, 파일 4+ 결합, 또는 단위 테스트 검증기 부재(Modal Ceiling) 시 동일 모델 Effort 반복 대신 debugging-concurrency/architecture 상위 모델로 전환한다.</r>\n  </rules>\n</active_rule_packet>"
+}

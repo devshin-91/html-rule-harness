@@ -1,0 +1,15 @@
+<active_rule_packet branch="coding.quick-edit" depth="2" tier="low" effort="low" skills="" pillars="prompt" escalated="false" saved_pct="97.5%">
+  <path>root -> coding.root -> coding.quick-edit</path>
+  <adaptation action="keep_optimal" policy="effort-first-with-verifier" workload="fast_extraction">현재 작업 난이도·정책 기준 최적 모델 티어와 Effort 유지</adaptation>
+  <model_candidates role="reference_examples" note="Map tier/effort to actual models available in user runtime">gemini-flash-lite, claude-haiku, gpt-5-mini / nano</model_candidates>
+  <rules>
+    <r src="root">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>
+    <r src="root">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>
+    <r src="root">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>
+    <r src="coding.root">전체 파일 읽기 전 `rg` 등 검색으로 대상 심볼·호출부만 먼저 위치 특정한다.</r>
+    <r src="coding.root">기존 주석·독스트링을 임의로 삭제하지 않으며, 테스트 통과는 최종 수정 이후 실행 결과로만 확인한다.</r>
+    <r src="coding.quick-edit">수정 대상 라인 주변만 읽고, 최소 diff로 즉시 패치한다.</r>
+    <r src="coding.quick-edit">문법/린트 확인만 수행하고 불필요한 아키텍처 재구성을 금지한다.</r>
+  </rules>
+  <escalate_if>동작 로직이 바뀌거나 테스트 실패가 발생하면 즉시 coding.debugging (중위 모델)으로 승격한다.</escalate_if>
+</active_rule_packet>

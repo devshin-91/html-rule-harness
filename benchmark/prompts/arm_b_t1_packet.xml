@@ -1,0 +1,17 @@
+<active_rule_packet branch="reasoning.simple-argument" depth="2" tier="low" effort="low" skills="claim-verify" pillars="prompt,harness" escalated="false" saved_pct="96.6%">
+  <path>root -> reasoning.root -> reasoning.simple-argument</path>
+  <adaptation action="keep_optimal" policy="overthinking-guard-low" workload="fast_extraction">단순 과제 과잉 숙고 역전 방지(arXiv:2504.13367)를 위해 기본 티어·Effort 유지</adaptation>
+  <model_candidates role="reference_examples" note="Map tier/effort to actual models available in user runtime">gemini-flash-lite, claude-haiku, gpt-5-mini / nano</model_candidates>
+  <skill_pipeline>T3:verify:claim-verify</skill_pipeline>
+  <rules>
+    <r src="root">일치하는 단일 분기만 따라가며 CSS/JS·비관련 분기는 읽지 않는다.</r>
+    <r src="root">파일 4+, 2회 실패, 동시성·보안 감지 시 티어·Effort를 상향한다.</r>
+    <r src="root">표기 모델명은 참고 예시이며 실행 환경의 실제 모델·Effort에 맞춰 호출한다(일반 기준선으로 작업·환경별 편차 존재).</r>
+    <r src="reasoning.root">단순 3줄 요약·명확한 1차원 논증은 과잉 추론 역전(arXiv:2504.13367)을 피하기 위해 low / low를 유지하되, 조건부 비교는 low / effort:medium으로 조정한다.</r>
+    <r src="reasoning.root">찬반 균형·숨은 가정·반론 검토·설득 논증은 mid(structured-argument), 상충 문헌 교차 종합은 high(deep-synthesis)로 분기한다.</r>
+    <r src="reasoning.simple-argument">출력 구조는 전제 → 핵심 근거 → 결론 → 적용 한계(1줄) 순으로 간결하게 유지한다.</r>
+    <r src="reasoning.simple-argument">단순 논증에 과잉 CoT를 강제하면 오히려 오류가 증가하므로(arXiv:2502.07266) low를 기본값으로 두고, 다각도 조건 비교 시에만 Effort를 medium으로 상향한다.</r>
+    <r src="reasoning.simple-argument">제공되지 않은 수치나 외부 인용을 추측으로 생성하지 않는다.</r>
+  </rules>
+  <escalate_if>반론 재반박·숨은 가정 감사가 필요하면 reasoning.structured-argument(중위 모델)로, 상충 문헌 교차 종합은 reasoning.deep-synthesis(상위 모델)로 전환한다.</escalate_if>
+</active_rule_packet>
