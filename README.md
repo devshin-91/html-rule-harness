@@ -1,5 +1,9 @@
 # HTML Branching Rule & Model-Effort Router v2.0 (`html-rule-harness`)
 
+[![Code License: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/Code%20License-PolyForm%20Noncommercial%201.0.0-d97706.svg)](./LICENSE-CODE)
+[![Docs License: CC BY-NC 4.0](https://img.shields.io/badge/Docs%20%26%20Rules%20License-CC%20BY--NC%204.0-0f766e.svg)](./LICENSE-DOCS)
+[![Noncommercial Only](https://img.shields.io/badge/Use-Noncommercial%20Only-b91c1c.svg)](./LICENSE)
+
 > **Google Harness² (`google-research/harness2`, `arXiv:2610.14224`) · Markdown 단일 원천 → 결정적 HTML 뷰(`md-html-guide`) · 5계보 환각 방지 가드레일(`antigravity-gemini-anti-hallucination`) · Gemini 4 Carbon/Argon/Neon/Hydrogen v3.0 동적 라우터**
 
 ---
@@ -190,3 +194,18 @@ Explorer UI (`rules/index.html`)는 상업적 무료 사용이 검증된 오픈�
 - **Pretendard Variable (`v1.3.9`)** — SIL Open Font License 1.1 (`rules/assets/licenses/pretendard-OFL.txt`)
 - **IBM Plex Sans KR** — SIL Open Font License 1.1 (`rules/assets/licenses/ibm-plex-OFL.txt`)
 - **JetBrains Mono** — SIL Open Font License 1.1 (`rules/assets/licenses/jetbrains-mono-OFL.txt`)
+
+---
+
+## 9. 라이선스 및 면책 조항 (Noncommercial Dual License & Disclaimers)
+
+본 저장소는 **상업적 이용 불가(Noncommercial Only)** 원칙에 따라 코드와 문서/규칙에 각각 최적화된 이중 비영리 라이선스를 적용합니다. 상세 조건은 [`LICENSE`](./LICENSE)를 참고하세요.
+
+| 대상 범위 | 적용 라이선스 (SPDX) | 전문 파일 | 허용 및 제한 사항 |
+| :--- | :--- | :--- | :--- |
+| **소스 코드 및 스크립트**<br>(`scripts/`, `rules/assets/*.js,css`, `tests/`, `benchmark/*.py`) | **PolyForm Noncommercial License 1.0.0**<br>(`PolyForm-Noncommercial-1.0.0`) | [`LICENSE-CODE`](./LICENSE-CODE) | 개인 학습·학술 연구·비영리 실험 무료 이용 가능 / **상업적 이용 금지** |
+| **규칙·스킬·문서·벤치마크 리포트**<br>(`rules/src/`, `rules/*.html,json`, `.agents/skills/`, `README.md`, `reference/`, `library/`, `benchmark/*.md`) | **Creative Commons Attribution-NonCommercial 4.0**<br>(`CC-BY-NC-4.0`) | [`LICENSE-DOCS`](./LICENSE-DOCS) | 출처 표기(`devshin-91`) 하에 비영리 공유·변경 가능 / **상업적 이용 금지** |
+| **번들된 서드파티 오픈소스 폰트·아이콘**<br>(`rules/assets/licenses/`) | ISC / MIT / SIL OFL 1.1 | [`rules/assets/licenses/`](./rules/assets/licenses/) | 각 원 저작물의 오픈소스 라이선스 그대로 적용 |
+
+* **서드파티 서비스 및 상표 면책**: 본 저장소는 Google Antigravity, Google Gemini 모델, Google Harness², Anthropic Claude, OpenAI와 공식 제휴·승인 관계가 없으며 어떠한 서드파티 모델·서비스 사용권도 부여하지 않습니다. 각 모델과 플랫폼은 해당 제공사의 이용약관(Terms of Service)을 준수하여 사용해야 합니다.
+* **Copyright**: `Copyright (c) 2026 devshin-91` (Co-authored with Google Antigravity `@antigravity-bot`).

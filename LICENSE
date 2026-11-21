@@ -1,0 +1,81 @@
+Dual Noncommercial License Notice (PolyForm-Noncommercial-1.0.0 AND CC-BY-NC-4.0)
+
+Copyright (c) 2026 devshin-91, to the extent protected by applicable law.
+Required Notice: Copyright (c) 2026 devshin-91 (https://github.com/devshin-91/html-rule-harness)
+Co-authored with Google Antigravity (@antigravity-bot).
+
+===============================================================================
+1. DUAL NONCOMMERCIAL LICENSE SCOPE / 이중 비영리 라이선스 적용 범위
+===============================================================================
+
+This repository ("html-rule-harness") is strictly for NONCOMMERCIAL use only
+(personal study, academic research, hobby projects, noncommercial experiments).
+Commercial use — including embedding in paid products/services, commercial
+redistribution, paid courses/books, or internal commercial production use — is
+NOT permitted without prior written permission from the copyright holder.
+
+본 저장소("html-rule-harness")의 원본 저작물은 비영리(개인 학습, 학술 연구,
+취미 프로젝트, 비영리 실험) 목적에 한해 이용할 수 있습니다. 유료 서비스 탑재,
+상업적 재배포, 유료 강의·교재 판매, 영리 조직의 상업적 프로덕션 활용 등 일체의
+상업적 이용은 저작권자의 사전 서면 허가 없이 금지됩니다.
+
+  (A) Source Code & Scripts — PolyForm Noncommercial License 1.0.0
+      - SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+      - Applies to: `scripts/*.py`, `rules/assets/rule-ui.js`,
+        `rules/assets/rule-ui.css`, `rules/assets/tree-data.js`,
+        `tests/*.py`, `benchmark/*.py`, `benchmark/seeds/*.py`,
+        `benchmark/workspace_a/*.py`, `benchmark/workspace_b/*.py`.
+      - Full legal text: see `LICENSE-CODE` in this repository
+        (https://polyformproject.org/licenses/noncommercial/1.0.0).
+
+  (B) Rules, Skills, Documentation & Benchmark Reports — CC BY-NC 4.0
+      - SPDX-License-Identifier: CC-BY-NC-4.0
+      - Applies to: `rules/src/**/*.md`, `rules/index.html`, `rules/router.html`,
+        `rules/branches/**/*.html`, `rules/*.json`, `.agents/skills/**`,
+        `AGENTS.md`, `README.md`, `rules.md`, `progress.md`, `reference.md`,
+        `tradeoff.md`, `reference/**`, `library/**`, `benchmark/**/*.md`,
+        `benchmark/cache/**`, `benchmark/prompts/**`.
+      - Full legal text: see `LICENSE-DOCS` in this repository
+        (https://creativecommons.org/licenses/by-nc/4.0/legalcode).
+
+===============================================================================
+2. THIRD-PARTY OPEN-SOURCE ASSETS / 서드파티 오픈소스 자산 분리 적용
+===============================================================================
+
+The noncommercial terms above apply ONLY to the original works authored in this
+repository. Bundled third-party open-source assets remain governed strictly by
+their own permissive licenses (full texts in `rules/assets/licenses/`):
+
+  - Lucide Icons (v0.460.0): ISC / MIT License (`rules/assets/licenses/lucide-LICENSE.txt`)
+  - Pretendard Variable (v1.3.9): SIL Open Font License 1.1 (`rules/assets/licenses/pretendard-OFL.txt`)
+  - IBM Plex Sans KR: SIL Open Font License 1.1 (`rules/assets/licenses/ibm-plex-OFL.txt`)
+  - JetBrains Mono: SIL Open Font License 1.1 (`rules/assets/licenses/jetbrains-mono-OFL.txt`)
+
+===============================================================================
+3. THIRD-PARTY SERVICES, MODELS & TRADEMARKS / 서드파티 서비스·상표 면책
+===============================================================================
+
+This repository does NOT include, distribute, or grant any license or rights to
+Google Antigravity, Google Gemini models, Google Harness², Anthropic Claude, or
+OpenAI models/services. This project is an independent research/engineering work
+and is NOT affiliated with, sponsored by, or endorsed by Google, Anthropic, or
+OpenAI. Anyone using those models, platforms, or APIs must install and use them
+strictly under their respective owners' Terms of Service and usage policies.
+All product names and trademarks belong to their respective owners.
+
+본 저장소는 Google Antigravity, Google Gemini 모델, Google Harness², Anthropic
+Claude, OpenAI의 제품·서비스·모델을 포함하거나 배포하지 않으며, 해당 제공사와
+공식 제휴·후원·승인 관계가 없습니다. 각 모델과 플랫폼의 이용은 해당 제공사의
+이용약관(Terms of Service)을 준수해야 하며, 모든 제품명과 상표는 각 권리자에게
+귀속됩니다.
+
+===============================================================================
+4. NO WARRANTY & LIMITATION OF LIABILITY / 보증 부인 및 책임 제한
+===============================================================================
+
+TO THE EXTENT PERMITTED BY APPLICABLE LAW, THIS REPOSITORY (BOTH CODE AND
+DOCUMENTATION) IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, ACCURACY, OR NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, QUOTA/API COSTS, OR OTHER
+LIABILITY ARISING FROM THE USE OF THIS REPOSITORY.
