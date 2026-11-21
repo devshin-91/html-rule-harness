@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/coding/quick-edit.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="coding.quick-edit"
@@ -20,16 +21,10 @@
       data-keywords="typo,rename,format,boilerplate,lint,snippet,오타,포맷,단순수정,스니펫,리네임"
       data-escalation-policy="effort-first-with-verifier"
       data-workload="fast_extraction"
-      data-escalate-when="logic_change|test_failure|coupled_files>=2">
+      data-escalate-when="logic_change|test_failure|coupled_files&gt;=2">
   <header class="rule-head">
-    <div class="rule-eyebrow">Depth 2 · Coding Leaf · Low Tier</div>
     <h1>단순 편집 · 보일러플레이트</h1>
     <p class="rule-summary">로직 변경이 없는 단일 파일 수정, 오타 교정, 스타일/포맷 정리에 하위 모델을 배치합니다.</p>
-    <div class="rule-badges" data-routing>
-      <span class="badge tier-low" data-field="tier">Model Tier: low (하위 모델 권장)</span>
-      <span class="badge effort-low" data-field="effort">Effort: low</span>
-      <span class="badge skill" data-field="skills">Skills: none (직접 실행)</span>
-    </div>
   </header>
 
   <section class="rule-card" data-rules>

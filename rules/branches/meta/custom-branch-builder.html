@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/meta/custom-branch-builder.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="meta.custom-builder"
@@ -19,23 +20,17 @@
       data-keywords="custom branch,new rule,template,extend,split,커스텀 분기,규칙 추가,확장,템플릿"
       data-escalate-when="schema_breaking_change">
   <header class="rule-head">
-    <div class="rule-eyebrow">Depth 2 · Meta Leaf · Mid Tier</div>
     <h1>커스텀 작업 분기 빌더</h1>
     <p class="rule-summary">특정 도메인이나 복합 워크플로우 전용의 커스텀 HTML 분기 구조를 Harness² 방식으로 설계·검증합니다.</p>
-    <div class="rule-badges" data-routing>
-      <span class="badge tier-mid" data-field="tier">Model Tier: mid (중위 모델 권장)</span>
-      <span class="badge effort-medium" data-field="effort">Effort: medium</span>
-      <span class="badge skill" data-field="skills">Skills: harness-propose-probe-compose</span>
-    </div>
   </header>
 
   <section class="rule-card" data-rules>
     <h2>커스텀 분기 제작 4단계 (Harness² Propose–Probe–Compose)</h2>
     <ol>
-      <li><strong>Propose</strong>: <code>rules/branches/&lt;domain&gt;/&lt;node&gt;.html</code>을 생성하고 <code>&lt;main class="rule-node" data-rule-id="..." data-parent="..." data-tier="..." data-effort="..." data-skills="..."&gt;</code> 속성을 채운다.</li>
-      <li><strong>Link</strong>: 부모 HTML의 <code>&lt;nav data-children&gt;</code>에 <code>data-when</code> 조건부 링크 1줄을 추가한다.</li>
-      <li><strong>Probe</strong>: <code>python scripts/validate_harness.py</code>와 <code>python scripts/resolve_rule.py --task "..."</code>로 토큰 절감률 및 라우팅 정확도를 검증한다.</li>
-      <li><strong>Compose</strong>: AI 블록(<code>&lt;!-- AI-RULE-START --&gt;</code> 내부)을 1,500B 권장(상한 2,800B) 이내로 다듬고, 외부 CSS/JS만으로 인간 UI를 유지한다.</li>
+      <li><strong>Propose</strong>: <code>rules/src/branches/&lt;domain&gt;/&lt;node&gt;.md</code>에 YAML frontmatter(<code>rule_id</code>, <code>parent</code>, <code>depth</code>, <code>tier</code>, <code>effort</code>, <code>skills</code>, <code>keywords</code>)와 최소 실행 규칙을 작성한다.</li>
+      <li><strong>Link</strong>: 부모 Markdown(<code>rules/src/.../index.md</code>)의 <code>## Branches</code> 표에 조건부 분기 행 1줄을 추가한다.</li>
+      <li><strong>Probe</strong>: <code>python scripts/build_rules_html.py</code>, <code>python scripts/validate_harness.py</code>, <code>python scripts/resolve_rule.py --task "..."</code>로 컴파일·토큰 절감률·라우팅을 검증한다.</li>
+      <li><strong>Compose</strong>: 컴파일된 HTML의 AI 블록(<code>&lt;!-- AI-RULE-START --&gt;</code> 내부)을 1,500B 권장(상한 2,800B) 이내로 유지하고, Markdown 단일 소스를 편집 후 재컴파일한다.</li>
     </ol>
   </section>
 </main>

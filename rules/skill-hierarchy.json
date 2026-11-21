@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "phases": ["gate", "plan", "execute", "verify"],
   "skills": {
     "rule-router": {
@@ -71,6 +71,15 @@
       "phase": "verify",
       "min_model_tier": "low",
       "requires": [],
+      "conflicts_with": [],
+      "trust": "verified-local"
+    },
+    "anti-hallucination-guard": {
+      "hierarchy_tier": 3,
+      "role": "verifier",
+      "phase": "verify",
+      "min_model_tier": "mid",
+      "requires": ["claim-verify"],
       "conflicts_with": [],
       "trust": "verified-local"
     }

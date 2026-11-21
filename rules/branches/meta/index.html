@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/meta/index.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="meta.root"
@@ -17,11 +18,11 @@
       data-effort="medium"
       data-skills="harness-propose-probe-compose,skill-security-audit"
       data-pillars="harness,graph"
-      data-keywords="meta,custom rule,model policy,tier,skill hierarchy,skill security,커스텀,규칙 설계,모델 추천,스킬 위계,악성 스킬"
+      data-keywords="meta,custom rule,model policy,tier,skill hierarchy,skill security,anti-hallucination,hallucination,fact-check,커스텀,규칙 설계,모델 추천,스킬 위계,악성 스킬,환각 방지,환각 검증,근거 인용"
       data-escalate-when="framework_redesign">
   <header class="rule-head">
     <h1>커스텀 규칙 · 모델 · 스킬 위계 정책</h1>
-    <p class="rule-summary">모델 티어 탐색, 커스텀 분기 빌더, 4계층 스킬 위계 및 악성 스킬 차단 게이트를 관장합니다.</p>
+    <p class="rule-summary">모델 티어 탐색, 커스텀 분기 빌더, 4계층 스킬 위계, 악성 스킬 검역 및 환각 방지 가드레일을 관장합니다.</p>
   </header>
 
   <section class="rule-card" data-rules>
@@ -34,14 +35,11 @@
 
   <nav class="branch-grid" data-children aria-label="메타 세부 분기">
     <h2>세부 분기 (Depth 2)</h2>
-    <a class="branch-link" href="model-router-policy.html" data-target="meta.model-policy" data-tier="low"
-       data-when="하위/중위/상위 모델 탐색, Effort/승격 기준, 프론티어 과잉지시 금지"><strong>1. 난이도별 모델 · Effort 정책</strong></a>
-    <a class="branch-link" href="custom-branch-builder.html" data-target="meta.custom-builder" data-tier="mid"
-       data-when="특정 작업용 커스텀 복합 분기 규칙 설계, HTML 규칙 노드 추가"><strong>2. 커스텀 작업 분기 빌더</strong></a>
-    <a class="branch-link" href="skill-hierarchy.html" data-target="meta.skill-hierarchy" data-tier="mid"
-       data-when="스킬 위계 구조화, 스킬 간 분기·선행·충돌(SKILLCLASH) 해소, 바이브 코딩 스킬 체계화"><strong>3. 스킬 위계 · 분기 · 충돌 해결</strong></a>
-    <a class="branch-link" href="skill-security.html" data-target="meta.skill-security" data-tier="mid"
-       data-when="악성 스킬 탐지, SKILL.md 프롬프트 인젝션·크리덴셜 유출 차단, 외부 스킬 검역"><strong>4. 악성 스킬 차단 · 보안 게이트</strong></a>
+    <a class="branch-link" href="model-router-policy.html" data-target="meta.model-policy" data-tier="low" data-when="하위/중위/상위 모델 탐색, Effort/승격 기준, 프론티어 과잉지시 금지"><strong>1. 난이도별 모델 · Effort 정책</strong></a>
+    <a class="branch-link" href="custom-branch-builder.html" data-target="meta.custom-builder" data-tier="mid" data-when="특정 작업용 커스텀 복합 분기 규칙 설계, MD/HTML 규칙 노드 추가"><strong>2. 커스텀 작업 분기 빌더</strong></a>
+    <a class="branch-link" href="skill-hierarchy.html" data-target="meta.skill-hierarchy" data-tier="mid" data-when="스킬 위계 구조화, 스킬 간 분기·선행·충돌(SKILLCLASH) 해소"><strong>3. 스킬 위계 · 분기 · 충돌 해결</strong></a>
+    <a class="branch-link" href="skill-security.html" data-target="meta.skill-security" data-tier="mid" data-when="악성 스킬 탐지, SKILL.md 인젝션·크리덴셜 유출 차단, 외부 스킬 검역"><strong>4. 악성 스킬 차단 · 보안 게이트</strong></a>
+    <a class="branch-link" href="anti-hallucination.html" data-target="meta.anti-hallucination" data-tier="high" data-when="환각 검증, 근거 인용, 거짓 전제 교정, Gemini 4 Carbon/Argon/Hydrogen 5계보·Tier 0–2 팩트체크"><strong>5. 환각 방지 · 근거 인용 검증</strong></a>
   </nav>
 </main>
 <!-- AI-RULE-END -->

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Regression tests for the HTML Branching Rule System & Google Harness² validator."""
+"""Regression tests for the MD-Source -> HTML-Compiled Branching Rule System & Google Harness² validator."""
 
 from __future__ import annotations
 
+import json
+import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -11,7 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from resolve_rule import resolve  # noqa: E402
+from build_rules_html import compile_rules  # noqa: E402
+from resolve_rule import load_model_catalog, load_tree_from_html, load_tree_from_md, resolve  # noqa: E402
 from scan_skills_security import scan_skills_root  # noqa: E402
 from validate_harness import validate_harness  # noqa: E402
 
@@ -21,7 +26,11 @@ class TestHtmlRuleHarness(unittest.TestCase):
         errors, _, summary = validate_harness(ROOT)
         self.assertEqual(errors, [])
         self.assertLessEqual(summary["always_on_chars"], summary["always_on_cap"])
-        self.assertGreaterEqual(summary["html_nodes"], 14)
+        self.assertGreaterEqual(summary["html_nodes"], 28)
+        self.assertEqual(summary["md_nodes"], 28)
+        self.assertEqual(summary["html_nodes"], 28)
+        self.assertEqual(summary["skills"], 9)
+        self.assertTrue(summary["md_html_in_sync"])
 
     def test_simple_argument_routes_to_low_tier(self) -> None:
         res = resolve(ROOT / "rules", task="간단한 논증으로 핵심 장단점 3줄 요약 생성해줘")
@@ -199,6 +208,164 @@ class TestHtmlRuleHarness(unittest.TestCase):
             self.assertIn("SEC001", rule_ids)
             self.assertIn("SEC003", rule_ids)
             self.assertIn("SEC006", rule_ids)
+
+    # --- v2.0 Tests: MD-primary routing, MD-vs-HTML parity, build --check, Anti-Hallucination, Catalog v3.0 ---
+
+    def test_md_source_primary_and_automatic_html_fallback(self) -> None:
+        md_res = resolve(ROOT / "rules", task="TypeError 디버깅 및 코드 수정")
+        self.assertEqual(md_res["stats"]["source_format"], "md")
+        self.assertEqual(md_res["stats"]["total_nodes"], 28)
+        self.assertTrue(md_res["chain"][0]["rel_path"].endswith(".md"))
+
+        # Without rules/src/, resolver automatically falls back to compiled HTML
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_rules = Path(tmp) / "rules"
+            shutil.copytree(ROOT / "rules", tmp_rules, ignore=shutil.ignore_patterns("src"))
+            fb_res = resolve(tmp_rules, task="TypeError 디버깅 및 코드 수정")
+            self.assertEqual(fb_res["stats"]["source_format"], "html")
+            self.assertEqual(fb_res["stats"]["total_nodes"], 28)
+            self.assertTrue(fb_res["chain"][0]["rel_path"].endswith(".html"))
+            self.assertEqual(
+                [c["rule_id"] for c in fb_res["chain"]],
+                [c["rule_id"] for c in md_res["chain"]],
+            )
+
+    def test_md_vs_html_full_tree_and_routing_parity(self) -> None:
+        md_nodes = load_tree_from_md(ROOT / "rules")
+        html_nodes = load_tree_from_html(ROOT / "rules")
+        self.assertEqual(set(md_nodes), set(html_nodes))
+        self.assertEqual(len(md_nodes), 28)
+
+        sample_tasks = [
+            "간단한 논증으로 핵심 장단점 3줄 요약 생성해줘",
+            "TypeError 디버깅 및 코드 수정",
+            "Corrective RAG와 테스트 게이트 기법 조합 설계",
+            "Gemini 4 Carbon 환각 검증 및 근거 인용 감사",
+            "특정 작업을 위한 커스텀 복합 분기 규칙 설계",
+        ]
+        for query in sample_tasks:
+            r_md = resolve(ROOT / "rules", task=query, source="md")
+            r_html = resolve(ROOT / "rules", task=query, source="html")
+            self.assertEqual(r_md["stats"]["source_format"], "md")
+            self.assertEqual(r_html["stats"]["source_format"], "html")
+            self.assertEqual(
+                [c["rule_id"] for c in r_md["chain"]],
+                [c["rule_id"] for c in r_html["chain"]],
+                f"chain mismatch for {query!r}",
+            )
+            self.assertEqual(
+                [c["rules"] for c in r_md["chain"]],
+                [c["rules"] for c in r_html["chain"]],
+                f"rules mismatch for {query!r}",
+            )
+            self.assertEqual(
+                r_md["recommendation"],
+                r_html["recommendation"],
+                f"recommendation mismatch for {query!r}",
+            )
+
+    def test_build_rules_html_check_passes_and_detects_drift(self) -> None:
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "build_rules_html.py"), "--check"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertIn('"md_nodes": 28', proc.stdout)
+        self.assertIn('"html_nodes": 28', proc.stdout)
+
+        # Verify drift detection in an isolated copy
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_root = Path(tmp) / "repo"
+            shutil.copytree(ROOT / "rules", tmp_root / "rules")
+            shutil.copytree(ROOT / ".agents", tmp_root / ".agents")
+            router_html = tmp_root / "rules" / "router.html"
+            router_html.write_text(router_html.read_text(encoding="utf-8") + "\n<!-- drift -->\n", encoding="utf-8")
+            ok, issues, _ = compile_rules(tmp_root, check=True)
+            self.assertFalse(ok)
+            self.assertTrue(any("rules/router.html" in item for item in issues))
+
+    def test_anti_hallucination_branch_routing_and_skill_pipeline(self) -> None:
+        res = resolve(ROOT / "rules", task="Gemini 4 Carbon 환각 검증 및 근거 인용 감사")
+        self.assertEqual(res["stats"]["source_format"], "md")
+        self.assertEqual(
+            [c["rule_id"] for c in res["chain"]],
+            ["root", "meta.root", "meta.anti-hallucination"],
+        )
+        rec = res["recommendation"]
+        self.assertEqual(rec["recommended_tier"], "high")
+        self.assertEqual(rec["recommended_effort"], "high")
+        self.assertEqual(rec["escalation_policy"], "capacity-switch-sensitive")
+        self.assertEqual(rec["workload_profile"], "anti_hallucination_audit")
+        self.assertIn("anti-hallucination-guard", rec["recommended_skills"])
+        self.assertIn("claim-verify", rec["recommended_skills"])
+        pipe_names = [p["name"] for p in rec["skill_pipeline"]]
+        self.assertLess(
+            pipe_names.index("claim-verify"),
+            pipe_names.index("anti-hallucination-guard"),
+        )
+        self.assertGreater(res["stats"]["saved_pct"], 85.0)
+
+        # Python<->JS pillar parity: hallucination queries also activate "harness" pillar
+        rag_halluc = resolve(ROOT / "rules", task="RAG 검색 결과의 환각 여부 점검")
+        self.assertIn("harness", rag_halluc["recommendation"]["recommended_pillars"])
+
+    def test_model_catalog_v3_gemini_4_lineage_specs_and_zero_deprecated(self) -> None:
+        cat_path = ROOT / "rules" / "model-catalog.json"
+        raw = cat_path.read_text(encoding="utf-8")
+        self.assertIsNone(
+            re.search(r"\bgemini-(?:2\.5|2\.0|1\.5)(?:-[a-z0-9._-]+)?\b", raw, re.I),
+            "Deprecated Gemini 2.5/2.0/1.5 model found in rules/model-catalog.json",
+        )
+        catalog = load_model_catalog(ROOT / "rules")
+        self.assertEqual(catalog["version"], "3.0")
+
+        specs = catalog["gemini_lineage_specs"]
+        models = specs["models"]
+
+        # Carbon & Argon exact bounds
+        for mname in ("gemini-4-carbon", "gemini-4-argon"):
+            m = models[mname]
+            self.assertEqual(m["thinking_level_supported"], ["low", "medium", "high"])
+            self.assertEqual(m["thinking_level_default"], "medium")
+            self.assertIn("xhigh", m["thinking_level_unsupported"])
+            self.assertIn("minimal", m["thinking_level_unsupported"])
+            self.assertFalse(m["explicit_caching_supported"])
+            self.assertFalse(m["pixel_segmentation_masks_supported"])
+            self.assertTrue(m["long_decode_supported"])
+
+        # Hydrogen exact bounds
+        hyd = models["gemini-4-hydrogen"]
+        self.assertEqual(hyd["thinking_level_supported"], ["low", "medium", "high", "xhigh"])
+        self.assertEqual(hyd["thinking_level_default"], "high")
+        self.assertIn("minimal", hyd["thinking_level_unsupported"])
+        self.assertFalse(hyd["explicit_caching_supported"])
+        self.assertTrue(hyd["long_decode_supported"])
+
+        # Neon, Flash-Lite, 3.8 Flash, Decisions API present
+        self.assertIn("gemini-4-neon", models)
+        self.assertEqual(models["gemini-3.5-flash-lite"]["thinking_level_supported"], ["minimal", "low", "medium", "high"])
+        self.assertIn("gemini-3.8-flash", models)
+        dec = models["gemini-decision-1"]
+        self.assertEqual(dec["api_version"], "v1beta")
+        self.assertEqual(dec["output_tokens"], 0)
+        self.assertEqual(set(dec["modes"]), {"noul", "choice", "score"})
+
+        # Long Decode compaction & activation rules
+        ld = specs["long_decode"]
+        self.assertTrue(ld["activation_conditions"]["background"])
+        self.assertEqual(ld["activation_conditions"]["max_output_tokens_gt"], 65536)
+        self.assertFalse(ld["use_total_input_tokens_for_compaction"])
+
+        # Tier candidates reflect v3.0 active models
+        low_models = {c["model"] for c in catalog["tiers"]["low"]["candidates"]}
+        mid_models = {c["model"] for c in catalog["tiers"]["mid"]["candidates"]}
+        high_models = {c["model"] for c in catalog["tiers"]["high"]["candidates"]}
+        self.assertTrue({"gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-decision-1"} <= low_models)
+        self.assertTrue({"gemini-4-hydrogen", "gemini-4-neon"} <= mid_models)
+        self.assertTrue({"gemini-4-carbon", "gemini-4-argon"} <= high_models)
 
 
 if __name__ == "__main__":

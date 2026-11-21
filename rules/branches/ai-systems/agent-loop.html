@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/ai-systems/agent-loop.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="ai-systems.agent-loop"
@@ -20,7 +21,7 @@
       data-keywords="loop,react,reflexion,evaluator optimizer,self-refine,retry,backpressure,루프,자가수정,반복,피드백,테스트 루프"
       data-escalation-policy="effort-first-with-verifier"
       data-workload="verified_coding"
-      data-escalate-when="attempts>=2|unbounded_cycle|multi_worker_needed">
+      data-escalate-when="attempts&gt;=2|unbounded_cycle|multi_worker_needed">
   <header class="rule-head">
     <h1>Loop 중심 설계 (ReAct / Evaluator-Optimizer / Retry)</h1>
     <p class="rule-summary">명확한 검증 기준(테스트·린터·루브릭)을 통과할 때까지 생성→관찰→수정을 반복 수렴시키는 제어 루프입니다.</p>

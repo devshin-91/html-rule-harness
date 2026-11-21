@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/meta/skill-hierarchy.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="meta.skill-hierarchy"
@@ -18,7 +19,7 @@
       data-skills="rule-router,harness-propose-probe-compose"
       data-pillars="harness,graph"
       data-keywords="skill hierarchy,skill clash,skill shadowing,flat skills,vibe coding,superpowers,스킬 위계,스킬 분기,스킬 충돌,스킬 구조화"
-      data-escalate-when="conflicting_skills|skill_count>=15">
+      data-escalate-when="conflicting_skills|skill_count&gt;=15">
   <header class="rule-head">
     <h1>스킬 위계 · 분기 · 충돌 해결</h1>
     <p class="rule-summary">평면적(flat) 스킬 나열로 인한 Skill Shadowing·충돌(SKILLCLASH)을 막기 위해 4계층 위계와 실행 페이즈를 강제합니다.</p>
@@ -30,7 +31,7 @@
       <li><strong>Tier 0 (Gate / Meta)</strong>: <code>rule-router</code>, <code>skill-security-audit</code>, <code>harness-propose-probe-compose</code> — 가장 먼저 진입·검역·분기 결정.</li>
       <li><strong>Tier 1 (Plan / Process)</strong>: <code>ai-architecture-stack</code>, <code>architecture-rfc</code> — 구현 스킬보다 선행해 설계·아키텍처를 확정.</li>
       <li><strong>Tier 2 (Execute / Domain)</strong>: <code>targeted-debug</code>, <code>frontier-craft</code> — 확정된 분기 내에서만 국소/고급 실행.</li>
-      <li><strong>Tier 3 (Verify / Audit)</strong>: <code>claim-verify</code> — 최종 산출물·근거·테스트 검증 후 완료 선언.</li>
+      <li><strong>Tier 3 (Verify / Audit)</strong>: <code>claim-verify</code>, <code>anti-hallucination-guard</code> — 최종 산출물·근거·환각·테스트 검증 후 완료 선언.</li>
       <li><strong>분기·충돌 해소 (O(depth) Lazy Discovery)</strong>: 평면 목록은 ~50~60개 근방에서 혼동 급락(<code>arXiv:2601.04748</code>)과 블랙홀 스킬 편향을 일으키므로, HTML 분기 트리로 활성 자식만 노출(<code>arXiv:2607.11138</code>)하고 <code>rules/skill-hierarchy.json</code>의 선행(<code>requires</code>)·충돌(<code>conflicts_with</code>)을 자동 정렬한다(<code>SkillDAG</code>).</li>
     </ul>
   </section>

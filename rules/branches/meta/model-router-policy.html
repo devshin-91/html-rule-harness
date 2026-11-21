@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/rule-ui.css">
 </head>
 <body>
+<!-- Compiled from rules/src/branches/meta/model-router-policy.md by scripts/build_rules_html.py — edit Markdown source, not HTML -->
 <!-- AI-RULE-START -->
 <main class="rule-node"
       data-rule-id="meta.model-policy"
@@ -37,18 +38,17 @@
   </section>
 </main>
 <!-- AI-RULE-END -->
-
 <section class="rule-node" style="margin-top:0;">
   <div class="rule-card">
-    <h2>프로바이더별 모델 티어 · Effort 제어 카탈로그 (Human Reference)</h2>
+    <h2>프로바이더별 모델 티어 · Effort 제어 카탈로그 (v3.0 Human Reference)</h2>
     <table class="policy-table">
       <thead>
-        <tr><th>티어 / 점수</th><th>Effort API</th><th>후보 모델군</th><th>모델 변경 · 특화 전환 기준</th></tr>
+        <tr><th>티어 / 점수</th><th>Effort / <code>thinking_level</code></th><th>후보 모델군 (Active Only)</th><th>모델 변경 · 특화 전환 기준</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>low (0–41)</strong></td><td><code>low</code> / <code>minimal</code></td><td>Gemini Flash-Lite / Claude Haiku / GPT-mini·nano</td><td>과잉 숙고 역전 방지 기본 유지; 조건 비교 시 <code>effort:medium</code>, 반론/복수 파일 시 <code>mid</code> 전환</td></tr>
-        <tr><td><strong>mid (42–74)</strong></td><td><code>medium</code> (<code>adaptive</code>)</td><td>Gemini Flash (1M) / Claude Sonnet / GPT balanced</td><td>테스트 존재 1회 실패 → <code>effort:high</code>; Sonnet <code>xhigh</code> 초과·검증기 부재·문헌 상충 → <code>high</code> 전환</td></tr>
-        <tr><td><strong>high (75–100)</strong></td><td><code>medium</code>~<code>high</code></td><td>Gemini Pro / Claude Opus / GPT Frontier</td><td>명확한 아키텍처 명세 시 Opus <code>medium</code>, 동시성·보안·상충 종합 시 <code>high</code> 적용</td></tr>
+        <tr><td><strong>low (0–41)</strong></td><td><code>minimal</code> / <code>low</code></td><td><code>gemini-3.5-flash-lite</code> · <code>gemini-decision-1</code> (<code>v1beta</code>) / Claude Haiku / GPT-mini</td><td>과잉 숙고 역전 방지 기본 유지; 폐쇄형 분류는 <code>client.decisions.create</code> 우선, 반론/복수 파일 시 <code>mid</code> 전환</td></tr>
+        <tr><td><strong>mid (42–74)</strong></td><td><code>medium</code>~<code>high</code> (<code>xhigh</code> on Hydrogen)</td><td><code>gemini-4-hydrogen</code> (1M, 기본 <code>high</code>) · <code>gemini-4-neon</code> / Claude Sonnet / GPT balanced</td><td>테스트 존재 1회 실패 → Effort 상향; <code>minimal</code>·명시적 캐싱 미지원; 검증기 부재·문헌 상충 → <code>high</code> 전환</td></tr>
+        <tr><td><strong>high (75–100)</strong></td><td><code>medium</code>(기본)~<code>high</code></td><td><code>gemini-4-carbon</code> · <code>gemini-4-argon</code> (1M) / Claude Opus / GPT Frontier</td><td>Carbon/Argon은 <code>xhigh</code>/<code>minimal</code>·명시적 캐싱·픽셀 세그멘테이션 미지원; Long Decode는 <code>background=True</code> + <code>max_output_tokens &gt; 65536</code></td></tr>
       </tbody>
     </table>
   </div>

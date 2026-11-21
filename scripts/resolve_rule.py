@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Minimal-context HTML branching rule resolver & difficulty/model tier explorer."""
+"""Minimal-context MD-primary / HTML-fallback branching rule resolver & difficulty/model tier explorer."""
 
 from __future__ import annotations
 
@@ -7,18 +7,26 @@ import argparse
 import html
 import json
 import re
+import sys
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
+
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
+if _SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIR)
+
+from build_rules_html import MdRuleDoc, load_md_tree  # noqa: E402
 
 TIER_ORDER = {"low": 0, "mid": 1, "high": 2}
 TIER_NAMES = ("low", "mid", "high")
 EFFORT_BY_TIER = {"low": "low", "mid": "medium", "high": "high"}
 TOKEN_PATTERN = re.compile(r"[a-z0-9가-힣_]+", re.I)
+HUMAN_REF_SPLIT_RE = re.compile(r"\n##\s+Human Reference(?::|\s|$)", re.I)
 PILLAR_SIGNALS = {
     "prompt": ("prompt", "few-shot", "json schema", "pydantic", "dspy", "프롬프트", "스키마"),
     "context": ("context", "rag", "graphrag", "mem0", "memory", "compaction", "컨텍스트", "메모리", "검색"),
-    "harness": ("harness", "sandbox", "hook", "guardrail", "eval", "하네스", "샌드박스", "훅", "가드레일", "테스트 게이트"),
+    "harness": ("harness", "sandbox", "hook", "guardrail", "eval", "하네스", "샌드박스", "훅", "가드레일", "테스트 게이트", "환각", "hallucination"),
     "loop": ("loop", "react", "reflexion", "evaluator-optimizer", "retry", "루프", "반복", "자가수정"),
     "graph": ("graph", "langgraph", "adk", "workflow", "multi-agent", "hitl", "그래프", "멀티에이전트", "상태 전이"),
 }
@@ -26,7 +34,7 @@ PILLAR_SIGNALS = {
 
 @dataclass
 class ChildLink:
-    """Outgoing conditional branch link from an HTML rule node."""
+    """Outgoing conditional branch link from a rule node."""
 
     href: str
     target: str
@@ -37,7 +45,7 @@ class ChildLink:
 
 @dataclass
 class RuleNode:
-    """Parsed semantic rule payload extracted from <!-- AI-RULE-START/END -->."""
+    """Parsed semantic rule payload from rules/src/**/*.md (primary) or HTML AI-RULE block (fallback)."""
 
     rule_id: str
     parent: str
@@ -186,7 +194,51 @@ def parse_rule_file(path: Path, rules_root: Path) -> RuleNode:
     )
 
 
-def load_tree(rules_root: Path) -> dict[str, RuleNode]:
+def _md_doc_to_rule_node(doc: MdRuleDoc, rules_root: Path) -> RuleNode:
+    """Convert an MdRuleDoc parsed from rules/src/**/*.md into a RuleNode."""
+    md_path = rules_root / doc.src_rel_path
+    raw = md_path.read_text(encoding="utf-8").replace("\r\n", "\n")
+    ai_md = HUMAN_REF_SPLIT_RE.split(raw, maxsplit=1)[0].strip()
+    return RuleNode(
+        rule_id=doc.rule_id,
+        parent=doc.parent,
+        depth=doc.depth,
+        title=doc.title,
+        tier=doc.tier,
+        effort=doc.effort,
+        skills=list(doc.skills),
+        pillars=list(doc.pillars),
+        keywords=list(doc.keywords),
+        escalate_when=list(doc.escalate_when),
+        rel_path=doc.src_rel_path,
+        escalation_policy=doc.escalation_policy,
+        workload=doc.workload,
+        summary=doc.summary_plain,
+        rules=doc.rules_plain,
+        escalation_note=doc.escalation_plain,
+        children=[
+            ChildLink(
+                href=ch.href,
+                target=ch.target,
+                tier=ch.tier,
+                when=ch.when,
+                label=ch.combined_label,
+            )
+            for ch in doc.children
+        ],
+        ai_bytes=len(ai_md.encode("utf-8")),
+        file_bytes=doc.md_bytes,
+    )
+
+
+def load_tree_from_md(rules_root: Path) -> dict[str, RuleNode]:
+    """Load rules/src/router.md and rules/src/branches/**/*.md into a dict keyed by rule_id."""
+    src_root = rules_root / "src"
+    docs = load_md_tree(src_root)
+    return {nid: _md_doc_to_rule_node(doc, rules_root) for nid, doc in docs.items()}
+
+
+def load_tree_from_html(rules_root: Path) -> dict[str, RuleNode]:
     """Load router.html and all branches/**/*.html into a dict keyed by data-rule-id."""
     files = [rules_root / "router.html", *sorted((rules_root / "branches").rglob("*.html"))]
     nodes: dict[str, RuleNode] = {}
@@ -197,6 +249,25 @@ def load_tree(rules_root: Path) -> dict[str, RuleNode]:
         if node.rule_id in nodes:
             raise ValueError(f"duplicate data-rule-id {node.rule_id!r} in {f}")
         nodes[node.rule_id] = node
+    return nodes
+
+
+def load_tree_with_format(rules_root: Path, *, source: str = "auto") -> tuple[dict[str, RuleNode], str]:
+    """Load rule tree preferring rules/src/**/*.md with automatic fallback to compiled HTML."""
+    if source == "md":
+        return load_tree_from_md(rules_root), "md"
+    if source == "html":
+        return load_tree_from_html(rules_root), "html"
+    if source != "auto":
+        raise ValueError(f"unsupported source mode {source!r}; expected 'auto', 'md', or 'html'")
+    if (rules_root / "src" / "router.md").is_file():
+        return load_tree_from_md(rules_root), "md"
+    return load_tree_from_html(rules_root), "html"
+
+
+def load_tree(rules_root: Path, *, source: str = "auto") -> dict[str, RuleNode]:
+    """Load rule tree (MD single-source primary, automatic HTML fallback)."""
+    nodes, _ = load_tree_with_format(rules_root, source=source)
     return nodes
 
 
@@ -300,14 +371,16 @@ def resolve_adaptation_profile(leaf: RuleNode) -> tuple[str, str]:
             policy = "overthinking-guard-low"
         elif rid.startswith("research.") or rid == "ai-systems.context-rag":
             policy = "grounding-over-thinking"
-        elif leaf.tier == "high" or rid in ("reasoning.structured-argument", "meta.skill-security"):
+        elif leaf.tier == "high" or rid in ("reasoning.structured-argument", "meta.skill-security", "meta.anti-hallucination"):
             policy = "capacity-switch-sensitive"
         else:
             policy = "effort-first-with-verifier"
 
     workload = leaf.workload
     if not workload:
-        if rid == "reasoning.structured-argument":
+        if rid == "meta.anti-hallucination":
+            workload = "anti_hallucination_audit"
+        elif rid == "reasoning.structured-argument":
             workload = "balanced_debate_reasoning"
         elif policy == "grounding-over-thinking":
             workload = "long_context_rag" if leaf.tier != "low" else "fast_extraction"
@@ -534,7 +607,7 @@ def order_skill_pipeline(skills: list[str], hierarchy: dict) -> tuple[list[str],
 
 
 def approx_tokens(text: str) -> int:
-    """Rough cross-tokenizer estimate (~3.6 chars/token for mixed KO/EN HTML/XML)."""
+    """Rough cross-tokenizer estimate (~3.6 chars/token for mixed KO/EN MD/HTML/XML)."""
     return max(1, round(len(text.encode("utf-8")) / 3.6))
 
 
@@ -581,9 +654,10 @@ def resolve(
     security: bool = False,
     ambiguity: bool = False,
     has_verifier: bool = True,
+    source: str = "auto",
 ) -> dict:
     """Resolve an active branch chain, recommendation, and context-reduction statistics."""
-    nodes = load_tree(rules_root)
+    nodes, source_format = load_tree_with_format(rules_root, source=source)
     catalog = load_model_catalog(rules_root)
     hierarchy = load_skill_hierarchy(rules_root)
     if branch_id:
@@ -611,6 +685,7 @@ def resolve(
     total_tree_file_bytes = sum(n.file_bytes for n in nodes.values())
     active_chain_ai_bytes = sum(n.ai_bytes for n in chain)
     stats = {
+        "source_format": source_format,
         "total_nodes": len(nodes),
         "active_nodes": len(chain),
         "total_tree_file_bytes": total_tree_file_bytes,
@@ -651,7 +726,7 @@ def resolve(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Resolve minimal-context HTML branching rules.")
+    ap = argparse.ArgumentParser(description="Resolve minimal-context MD/HTML branching rules.")
     ap.add_argument("--rules-dir", type=Path, default=Path(__file__).resolve().parent.parent / "rules")
     ap.add_argument("--task", type=str, default="", help="Task description to classify top-down.")
     ap.add_argument("--branch", type=str, default="", help="Explicit branch rule_id (e.g. coding.debugging).")
@@ -661,6 +736,7 @@ def main() -> None:
     ap.add_argument("--security", action="store_true", help="Security/auth boundary signal.")
     ap.add_argument("--ambiguity", action="store_true", help="High requirement ambiguity signal.")
     ap.add_argument("--no-verifier", action="store_true", help="Disable automated test/compiler verifier oracle (forces model switch on modal ceiling).")
+    ap.add_argument("--source", choices=("auto", "md", "html"), default="auto", help="Rule tree source format (default: auto prefers rules/src/**/*.md with HTML fallback).")
     ap.add_argument("--format", choices=("xml", "json", "md"), default="xml")
     args = ap.parse_args()
 
@@ -674,6 +750,7 @@ def main() -> None:
         security=args.security,
         ambiguity=args.ambiguity,
         has_verifier=not args.no_verifier,
+        source=args.source,
     )
     if args.format == "json":
         print(json.dumps(res, ensure_ascii=False, indent=2))
@@ -688,7 +765,10 @@ def main() -> None:
             f"skills=`{', '.join(rec['recommended_skills']) or 'none'}`, "
             f"pillars=`{', '.join(rec['recommended_pillars'])}`"
         )
-        print(f"- **Context**: {st['packet_bytes']} B (~{st['packet_tokens_est']} tok) vs {st['total_tree_file_bytes']} B total ({st['saved_pct']}% saved)")
+        print(
+            f"- **Context**: {st['packet_bytes']} B (~{st['packet_tokens_est']} tok) vs "
+            f"{st['total_tree_file_bytes']} B total ({st['saved_pct']}% saved, source=`{st['source_format']}`)"
+        )
         print("### Rules")
         for c in res["chain"]:
             for r in c["rules"]:
