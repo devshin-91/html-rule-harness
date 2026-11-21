@@ -19,7 +19,7 @@
    - UI 확장: [`rules/assets/rule-ui.js`](rules/assets/rule-ui.js) & [`rules/assets/rule-ui.css`](rules/assets/rule-ui.css)에 5-Pillar 시각화 칩 및 AI 유즈케이스 프리셋 추가.
 6. **AI 유즈케이스 레퍼런스 (`reference/ai-engineering-patterns.md`, `reference/liner-scholar-papers.md`)**:
    - GitHub 저장소(`langgraph`, `adk-python`, `dspy`, `graphrag`, `mem0`, `pydantic-ai`) 및 Anthropic 가이드 정리.
-   - Liner Scholar 2차 탐색 완료(크레딧 **674 → 602 → 560**, 기준 `> 100` 준수): `GPTSwarm`, `GraphBit`, `AgentSPEX`, `VERSE`, `SoK: Agentic RAG`, `EA-GraphRAG`, `CRAG/Self-RAG`, `DISC/MALT`, `Capability Fencing` 논문의 실증 규칙을 `context-rag.html`, `agent-loop.html`, `graph-orch.html`, `combo-recipes.html`에 직접 반영 완료.
+   - Liner Scholar 2차 탐색 완료(크레딧 가드 기준 `> 100` 준수): `GPTSwarm`, `GraphBit`, `AgentSPEX`, `VERSE`, `SoK: Agentic RAG`, `EA-GraphRAG`, `CRAG/Self-RAG`, `DISC/MALT`, `Capability Fencing` 논문의 실증 규칙을 `context-rag.html`, `agent-loop.html`, `graph-orch.html`, `combo-recipes.html`에 직접 반영 완료.
 7. **트레이드오프 & 검증**:
    - [`tradeoff.md`](tradeoff.md) 갱신 완료.
    - `validate_harness.py`: `24` HTML 노드, `7` 스킬, `0` 에러 (`tree-data.js` 동기화 완료).
@@ -31,7 +31,7 @@
    - [`rules/branches/meta/model-router-policy.html`](rules/branches/meta/model-router-policy.html)에 최상위 모델 과잉 프롬프팅(Over-Prompting) 금지 규율 반영, [`rules/assets/rule-ui.js`](rules/assets/rule-ui.js)에 `[Frontier]` 시뮬레이터 프리셋 추가.
 9. **GitHub · 커뮤니티/SNS · 연계 사이트 · Liner Scholar 3차 체계화**:
    - [`reference/frontier-community-craft.md`](reference/frontier-community-craft.md): `anthropics/skills` (`frontend-design`, `canvas-design`), `generative_ui`, `x1xhlol/system-prompts-and-models-of-ai-tools`, 커뮤니티 Anti-Slop / Design Dials / Playwright `Slop Inventory` 루프, `21st.dev`·`v0.dev`·`shadcn/ui`·`Magic UI`, 벤더 공식 Frontier 가이드 정리.
-   - [`reference/liner-scholar-papers.md`](reference/liner-scholar-papers.md) 섹션 E 추가 (3차 크레딧 **560 → 513**, 기준 `> 100` 준수): `Pattern over Pixels`, `arXiv:2608.01347`, `arXiv:2606.02835`, `arXiv:2506.07142`, `arXiv:2410.21333`, `arXiv:2505.17813`, `arXiv:2507.04023`.
+   - [`reference/liner-scholar-papers.md`](reference/liner-scholar-papers.md) 섹션 E 추가 (3차 탐색, 크레딧 가드 기준 `> 100` 준수): `Pattern over Pixels`, `arXiv:2608.01347`, `arXiv:2606.02835`, `arXiv:2506.07142`, `arXiv:2410.21333`, `arXiv:2505.17813`, `arXiv:2507.04023`.
 
 ### Phase 4: 스킬 위계·분기 구조화 & 악성 스킬 보안 게이트
 10. **4계층 스킬 위계 & 선행·충돌 해소**:
@@ -71,3 +71,18 @@
   - 실측 총 소모 토큰 (`total_tokens`): `402,239` -> `276,264` (**-31.3% / -125,975 tok 절감**)
   - 작업 소요 시간: 병렬 최장 `90.0s` -> `89.0s` (단순 논증 `T1`은 `27.0s -> 17.0s`, **-37.0% 단축**)
   - 작업 품질·검증 점수: **`92 / 100점` -> `100 / 100점` (+8.0점 향상)**
+
+## Phase 8: v2.0 MD-Source → HTML-Compiled 리팩토링, Anti-Hallucination 가드레일 & Gemini 4 v3.0 카탈로그 (`2026-11-21`)
+- **MD 단일 원천 → 결정적 HTML 컴파일 (`md-html-guide` 원칙 적용)**:
+  - 28개 규칙 노드를 Markdown + YAML Frontmatter 단일 원천(`rules/src/router.md` + `rules/src/branches/**/*.md`, 총 `45,916 B`)으로 전환하고, 표준 라이브러리 기반 결정적 컴파일러 [`scripts/build_rules_html.py`](scripts/build_rules_html.py) (`--check` 동기화 검증 포함, **0 LLM 토큰**)로 `rules/router.html`, `rules/branches/**/*.html` (`73,564 B`), `rules/assets/tree-data.js`를 생성.
+  - [`scripts/resolve_rule.py`](scripts/resolve_rule.py)를 `rules/src/**/*.md` 우선 로드(+ HTML 자동 폴백, `stats.source_format: "md"|"html"`)로 리팩토링.
+- **Anti-Hallucination 가드레일 통합 (`antigravity-gemini-anti-hallucination`)**:
+  - 신규 분기 [`rules/src/branches/meta/anti-hallucination.md`](rules/src/branches/meta/anti-hallucination.md) (`meta.anti-hallucination`, `tier: high`, `effort: high`) 및 Tier 3 검증 스킬 [`.agents/skills/anti-hallucination-guard/SKILL.md`](.agents/skills/anti-hallucination-guard/SKILL.md) 추가, [`rules/skill-hierarchy.json`](rules/skill-hierarchy.json) v2.0 (9개 스킬) 및 [`AGENTS.md`](AGENTS.md) (`5,395 / 8,000 chars`) 트리거 등록.
+  - 공통 4대 원칙(도구 우선·역환각 금지, 선 원문 발췌+`#L` 인용, 모름의 권한·거짓 전제 교정, 실행 기반 검증), 5대 모델 계보 수칙, Tier 0–2 `ref-fact-checker` 및 `Stop` 훅(`max_continuations=2`) 규율 반영.
+- **모델 카탈로그 v3.0 업그레이드 ([`rules/model-catalog.json`](rules/model-catalog.json))**:
+  - 현역 검증 모델로 전면 갱신: `gemini-3.5-flash-lite`, `gemini-3.8-flash`, `gemini-decision-1` (`v1beta` Decisions API), `gemini-4-hydrogen`, `gemini-4-neon`, `gemini-4-argon`, `gemini-4-carbon` (구세대 레거시 1.x/2.x 모델 0건).
+  - 모델별 `thinking_level` 상하한(`carbon`/`argon`: `low`/`medium`[기본]/`high`, `xhigh`·`minimal` 불가; `hydrogen`: `low`/`medium`/`high`[기본]/`xhigh`, `minimal` 불가), 명시적 캐싱·픽셀 세그멘테이션 미지원 경계, Long Decode(`background=True` + `max_output_tokens > 65536`, `total_input_tokens` 압축 트리거 금지) 명세화.
+- **Explorer UI v2.0 Export Loop & 검증**:
+  - [`rules/index.html`](rules/index.html), [`rules/assets/rule-ui.js`](rules/assets/rule-ui.js), [`rules/assets/rule-ui.css`](rules/assets/rule-ui.css)에 `MD Source → HTML View` 배지·안내 배너, **`JSON 설정 내보내기`** + **`Markdown 규칙 패킷 내보내기`** + 기존 XML 복사 버튼, **`환각 검증 [Anti-Hallucination]`** 프리셋, Markdown 원본 빌더 템플릿 추가.
+  - 검증 결과: `build_rules_html.py --check` (28 MD/HTML 노드, `max_node_ai_bytes: 2,764 B <= 2,800 B`), `validate_harness.py` (`md_html_in_sync: true`, `skills: 9`, `model_catalog_version: 3.0`), `scan_skills_security.py` (`0 findings`), `unittest` (**17/17 OK**), `node --check rules/assets/rule-ui.js` (exit 0).
+

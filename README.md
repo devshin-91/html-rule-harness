@@ -1,6 +1,6 @@
-# HTML Branching Rule & Model-Effort Router (`html-rule-harness`)
+# HTML Branching Rule & Model-Effort Router v2.0 (`html-rule-harness`)
 
-> **Google Harness² (`google-research/harness2`, `arXiv:2610.14224`) 기반 계층형 HTML 규칙 분기 · 작업별 모델·Effort 동적 라우팅 · 4계층 스킬 보안 하네스**
+> **Google Harness² (`google-research/harness2`, `arXiv:2610.14224`) · Markdown 단일 원천 → 결정적 HTML 뷰(`md-html-guide`) · 5계보 환각 방지 가드레일(`antigravity-gemini-anti-hallucination`) · Gemini 4 Carbon/Argon/Neon/Hydrogen v3.0 동적 라우터**
 
 ---
 
@@ -31,13 +31,14 @@ SNS, 커뮤니티, GitHub 등에서는 바이브 코더(Vibe Coders)와 에이�
 
 위의 **문제 제기(범용 하네스의 한계 + 무분별·악성 스킬 문제)**와 **경험적 발견(작업별 모델·Effort 차등 배분의 효용)**을 결합하여, 본 저장소는 AI가 수행하는 유즈케이스를 체계적으로 분류(Sort)하고 작업마다 필요한 **기법·방어 규칙·모델 조합·Effort·검증 스킬**을 단일 분기로 자동 라우팅하는 **HTML 분기형 규칙 및 모델·Effort 라우터(`html-rule-harness`)**를 제안하고 구현했습니다.
 
-1. **듀얼 오디언스(AI + Human) HTML 분기형 규칙 트리 (`rules/router.html` & 27개 분기 노드)**:
-   - **AI 컨텍스트 최소화 (96%+ 절감)**: 전체 27개 HTML 규칙 파일(`55,577 B` / `~18,704 tok`)을 다 읽는 대신, 루트(`router.html`)에서 일치하는 단일 분기 체인(`Depth 0 → Depth 3`)만 따라가며 `<!-- AI-RULE-START --> ... <!-- AI-RULE-END -->` 블록만 추출해 단일 `<active_rule_packet>` XML(`470~690 tok`, **96.3%~98.2% 컨텍스트 절감**)로 주입합니다.
-   - **인간 친화적 인터랙티브 Explorer UI (`rules/index.html`)**: 사람이 브라우저로 열었을 때는 Warm Stone Paper(`#F6F5F0`) & Forest Teal(`#0F766E`) 기반의 모던 에디토리얼 워크벤치 UI(스크롤 고정 Sticky 시뮬레이터, 실시간 난이도·모델·Effort·패킷 시뮬레이션, 수동/자동 라우팅 전환 배너)로 동작합니다. 상업적 무료 오픈소스 에셋(**Lucide Icons**, **Pretendard Variable**, **IBM Plex Sans KR**, **JetBrains Mono**)만 사용하며 모든 라이선스 크레딧을 투명하게 번들링했습니다.
+1. **Markdown 단일 원천(`rules/src/**/*.md`) → 결정적 컴파일 HTML 뷰(`rules/router.html` & 28개 분기 노드, v2.0 `md-html-guide`)**:
+   - **MD Source of Truth + AI 컨텍스트 최소화 (94%~98% 절감)**: 모든 권위 있는 규칙은 YAML Frontmatter + Markdown(`rules/src/**/*.md`, 총 `45,916 B`)으로 작성하며, `scripts/build_rules_html.py`가 **0 LLM 토큰**으로 사람용 HTML 뷰(`73,564 B`)와 `rules/assets/tree-data.js`를 결정적으로 컴파일합니다. `scripts/resolve_rule.py`는 에이전트 호출 시 HTML 뷰 대신 **MD 원본을 1순위로 파싱**(HTML 자동 폴백)해 일치하는 단일 분기 체인(`Depth 0 → Depth 3`)만 `<active_rule_packet>`으로 추출합니다.
+   - **인간 친화적 인터랙티브 Explorer UI (`rules/index.html`) + Export Loop**: Warm Stone Paper(`#F6F5F0`) & Forest Teal(`#0F766E`) 기반 모던 에디토리얼 워크벤치 UI(Sticky 시뮬레이터, `MD Source → HTML View` 단일 원천 배지·안내 배너, **`JSON 설정 내보내기`** / **`Markdown 규칙 패킷 내보내기`** / XML 복사 버튼, Markdown 원본 커스텀 빌더)를 제공합니다. 상업적 무료 오픈소스 에셋(**Lucide Icons**, **Pretendard Variable**, **IBM Plex Sans KR**, **JetBrains Mono**)만 사용하며 라이선스 크레딧을 투명하게 번들링했습니다.
 2. **AI 유즈케이스 5대 기법 분류 및 복합 레시피 & 최상위 크래프트(`Frontier Craft`) 분기**:
-   - 작업을 5대 도메인(**논증·기획 `reasoning`**, **코드·디버깅·아키텍처 `coding`**, **문헌·RAG 리서치 `research`**, **AI 유즈케이스 기법 스택 `ai-systems`**, **메타·스킬·보안 `meta`**)으로 분류합니다.
+   - 작업을 5대 도메인(**논증·기획 `reasoning`**, **코드·디버깅·아키텍처 `coding`**, **문헌·RAG 리서치 `research`**, **AI 유즈케이스 기법 스택 `ai-systems`**, **메타·스킬·보안·환각 방지 `meta`**)으로 분류합니다.
    - 특히 각 작업이 **5대 엔지니어링 기법(`Prompt`, `Context`, `Harness`, `Loop`, `Graph`)** 중 무엇을 핵심 축으로 써야 하는지, 언제 복합 기법(`Prompt + Harness + Loop`, `Context + Loop`, `Harness + Loop + Graph`)을 조합해야 하는지, 그리고 최상위 프론티어 모델이 요구되는 **탁월한(Exceptional) 비주얼·아키텍처 크래프트(`frontier-craft`)**에서 프롬프트 유발 토큰 낭비(`arXiv:2608.01347`)와 시각 패턴 완성 편향(`Pattern over Pixels`)을 어떻게 방어할지 명시합니다.
-3. **작업별 '동일 모델 Effort 우선 조정 vs. 모델 티어 전환' 실증 정책 (`model-catalog.json` v2.0)**:
+3. **작업별 '동일 모델 Effort 우선 조정 vs. 모델 티어 전환' 실증 정책 & Gemini 4 v3.0 카탈로그 (`model-catalog.json` v3.0)**:
+   - 현역 검증 모델군으로 전면 업그레이드했습니다(구세대 레거시 1.x/2.x 모델 0건): **Low**(`gemini-3.5-flash-lite`, `gemini-3.8-flash`, `gemini-decision-1` v1beta Decisions API), **Mid**(`gemini-4-hydrogen` [기본 `high`, `xhigh` 지원, `minimal`·명시적 캐싱 미지원], `gemini-4-neon`), **High/Frontier**(`gemini-4-carbon` & `gemini-4-argon` [1M 통합 윈도우, `low`/`medium`(기본)/`high`, `xhigh`·`minimal`·명시적 캐싱·픽셀 세그멘테이션 미지원, Long Decode `background=True` + `max_output_tokens > 65536`, `total_input_tokens` 압축 트리거 금지]).
    - 논증 작업이라 해서 무조건 하위 모델(`low`)에만 묶지 않고, **단순 3줄 요약(`low/low`, 과잉 추론 억제)** → **찬반 균형·숨은 가정·반론 재반박(`mid/medium`, 아첨·확증 편향 방어)** → **상충 문헌 교차 종합(`high/high`)**으로 세분화했습니다.
    - 또한 학술 실증(`arXiv:2408.03314`, `arXiv:2510.27042`, `arXiv:2606.28661`, `arXiv:2603.14635`)을 바탕으로 **4대 적응 정책**을 구현했습니다:
      - `effort-first-with-verifier`: 단위 테스트·스키마 등 **외부 검증기가 존재할 때(`has_verifier=True`)** 경계 난이도나 1회 실패 시 상위 모델 전환보다 **동일 모델 내 Effort 상향(`low→medium`, `medium→high`)**을 우선 적용 (`raise_effort`).
@@ -45,9 +46,10 @@ SNS, 커뮤니티, GitHub 등에서는 바이브 코더(Vibe Coders)와 에이�
      - `grounding-over-thinking`: 사실 조회·RAG에서 근거가 모호할 때는 추론 Effort만 높이면 과잉 확신과 환각이 증가하므로 **쿼리 재작성·리랭커(Re-ranker) 검색 보강**을 우선 권고 (`ground_before_think`).
      - `overthinking-guard-low`: 단순 추출·빠른 편집에서는 과잉 추론 역전(`arXiv:2504.13367`)을 막기 위해 `low / low`를 유지 (`keep_optimal`).
    - 아울러 규칙에 표기된 모델명은 **참고용 예시(`reference_examples`)**임을 명시하여, 실제 호출 시에는 사용자의 실행 환경과 잔여 쿼터에 맞는 런타임 모델·Effort로 매핑하도록 안내합니다.
-4. **4계층 스킬 위계 DAG (`skill-hierarchy.json`) & 악성 스킬 정적 보안 검역기 (`scan_skills_security.py`)**:
-   - 평면적 스킬 나열을 탈피해 **`Tier 0 (Security Quarantine Gate) → Tier 1 (Lifecycle & Architecture) → Tier 2 (Domain Execution) → Tier 3 (Deterministic Verifier)`** 4계층 위계와 상호배타(`conflicts_with`) 규칙을 정의했습니다.
-   - `scripts/scan_skills_security.py`가 모든 스킬을 실행 전에 정적 스캔하여 프롬프트 인젝션, 자격증명 탈취, 난독화 실행, 무단 원격 쉘 실행 패턴이 발견되면 즉시 차단(`exit 2`)합니다.
+4. **4계층 스킬 위계 DAG (`skill-hierarchy.json` v2.0), 악성 스킬 보안 검역 & 5계보 Anti-Hallucination 가드레일**:
+   - 평면적 스킬 나열을 탈피해 **`Tier 0 (Security Quarantine Gate) → Tier 1 (Lifecycle & Architecture) → Tier 2 (Domain Execution) → Tier 3 (Deterministic Verifier: claim-verify, anti-hallucination-guard)`** 4계층 위계(총 9개 로컬 스킬)와 상호배타(`conflicts_with`) 규칙을 정의했습니다.
+   - `rules/src/branches/meta/anti-hallucination.md` (`meta.anti-hallucination`) 및 `.agents/skills/anti-hallucination-guard/SKILL.md`를 통해 `antigravity-gemini-anti-hallucination`의 **공통 4대 원칙**(도구 우선 검증·역환각 금지, 선 원문 발췌+`#L` 인용, 모름의 권한·거짓 전제 교정, 실행 기반 검증), **5대 계보 수칙**(Flash/Lite, Hydrogen, Neon, Argon, Carbon), **Tier 0–2 결정론적 팩트체크**(`ref-fact-checker`)를 라우터와 UI 프리셋에 통합했습니다.
+   - `scripts/scan_skills_security.py`가 모든 9개 스킬을 실행 전에 정적 스캔하여 프롬프트 인젝션, 자격증명 탈취, 난독화 실행, 무단 원격 쉘 실행 패턴이 발견되면 즉시 차단(`exit 2`)합니다.
 5. **실증 A/B 벤치마크 및 중단 복구 체크포인트 캐시 (`benchmark/`)**:
    - 복합 엔지니어링 대과제를 4개 세부 작업(`T1`~`T4`)으로 분기하여 **그룹 A(Google Harness² 단독 + `Gemini 4 Argon (Medium)` 단일 고정 + 비라우팅 전체 규칙)**와 **그룹 B(Google Harness² + HTML 분기형 규칙 + 작업별 `Argon Low/Medium/High` 동적 라우팅)**를 실측 비교하고, **`Gemini 4 Argon (High)`**로 양쪽 산출물의 정밀 품질과 토큰당 가성비를 감사했습니다.
 
@@ -87,9 +89,9 @@ SNS, 커뮤니티, GitHub 등에서는 바이브 코더(Vibe Coders)와 에이�
 
 ---
 
-## 6. 단계별 개발 히스토리 (Development History: Phase 1 ~ Phase 7)
+## 6. 단계별 개발 히스토리 (Development History: Phase 1 ~ Phase 8)
 
-대화 시작부터 최종 벤치마크 검증까지 총 7단계(Phase 1~7)의 점진적 반복(Propose–Probe–Compose)을 거쳐 발전했습니다.
+대화 시작부터 v2.0 아키텍처 리팩토링까지 총 8단계(Phase 1~8)의 점진적 반복(Propose–Probe–Compose)을 거쳐 발전했습니다.
 
 ```mermaid
 flowchart LR
@@ -99,6 +101,7 @@ flowchart LR
     P4 --> P5["Phase 5\n논증 중위 분기 신설 &\n에디토리얼 UI/UX 개편"]
     P5 --> P6["Phase 6\n작업별 Effort vs 모델 전환\n임계치 & Sticky UX"]
     P6 --> P7["Phase 7\nGemini 4 Argon 8-워커\nA/B 벤치마크 & High 감사"]
+    P7 --> P8["Phase 8 (v2.0)\nMD→HTML 단일 원천 ·\nAnti-Hallucination · Carbon v3.0"]
 ```
 
 | 단계 | 핵심 마일스톤 및 해결 과제 | 주요 산출물 및 검증 지표 |
@@ -110,6 +113,7 @@ flowchart LR
 | **Phase 5**<br>*(논증 보정 & UI 개편)* | • 논증 난이도 세분화: 반론·숨은 가정·설득 논증을 위한 중위 분기(`structured-argument.html`, `mid/medium`) 추가 및 `"예외적"` 오역을 `"탁월한/뛰어난"`으로 바로잡음<br>• AI slop 느낌과 화면 잘림을 없앤 Warm Paper 에디토리얼 UI 및 오픈소스 스톡 크레딧 반영 | `rules/branches/reasoning/structured-argument.html`, `rules/index.html`, `rules/assets/licenses/` |
 | **Phase 6**<br>*(Effort vs 모델 전환 & UX)* | • 외부 검증기 유무(`has_verifier`)와 모달 천장(`arXiv:2606.28661`)에 기반한 **4대 작업별 Effort/모델 전환 정책** 구현<br>• 우측 시뮬레이터 스크롤 고정(Sticky UX), 수동 선택 해제 직관화, 런타임 모델 매핑 및 일반 기준선 한계 고지문 추가 | `rules/model-catalog.json` (v2.0), `reference/model-switching-and-effort.md`, `rules/assets/rule-ui.css` |
 | **Phase 7**<br>*(실증 A/B 벤치마크)* | • `Gemini 4 Argon (Medium)` 단일 고정(그룹 A) vs 규칙 기반 `Argon Low/Medium/High` 동적 라우팅(그룹 B) 8-워커 실증 벤치마크 및 중단 복구 체크포인트 캐시 구현<br>• `Gemini 4 Argon (High)` 정밀 품질 감사로 **입력 토큰 -33.9%, 총 토큰 -31.3%, 정밀 품질 71→100점, 토큰당 가성비 2.05~2.13배** 입증 | `benchmark/ab_harness.py`, `benchmark/audit_quality_high.py`, `benchmark/AB_BENCHMARK_REPORT.md` |
+| **Phase 8 (v2.0)**<br>*(MD→HTML · Anti-Hallucination · Carbon v3.0)* | • `md-html-guide` 적용: 28개 규칙을 Markdown 단일 원천(`rules/src/**/*.md`)으로 전환하고 `scripts/build_rules_html.py` (`--check`, 0 LLM 토큰)로 HTML 뷰·`tree-data.js` 결정적 컴파일 + Explorer UI **JSON / Markdown 내보내기 루프** 구축<br>• `antigravity-gemini-anti-hallucination` 통합: `meta.anti-hallucination` 분기 & Tier 3 `anti-hallucination-guard` 스킬(총 9개 스킬) 신설<br>• `model-catalog.json` v3.0 업그레이드: **Gemini 4 Carbon / Argon / Neon / Hydrogen / 3.5 Flash-Lite / Decisions API** 공식 스펙·Long Decode 규칙 반영 (레거시 1.x/2.x 0건, 단위 테스트 **17/17 OK**) | `rules/src/**/*.md`, `scripts/build_rules_html.py`, `rules/model-catalog.json` (v3.0), `.agents/skills/anti-hallucination-guard/`, `library/experiments/08-v2-md-source-carbon-refactor.md` |
 
 ---
 
@@ -117,24 +121,28 @@ flowchart LR
 
 ```text
 html-rule-harness/
-├── AGENTS.md                        # Google Harness² Always-on 루트 라우터 (<= 8,000 chars)
+├── AGENTS.md                        # Google Harness² Always-on 루트 라우터 (5,395 / 8,000 chars)
 ├── rules.md                         # 8단계 연구·실행·검증 불변 프로토콜
 ├── rules/
-│   ├── index.html                   # 사람용 인터랙티브 HTML 분기 탐색기 & 시뮬레이터 UI
-│   ├── router.html                  # AI용 최소 진입 루트 라우터 (Depth 0)
-│   ├── model-catalog.json           # 작업별 Effort 조정 vs 모델 전환 정책 & 티어 카탈로그 (v2.0)
-│   ├── skill-hierarchy.json         # 4계층 스킬 위계 DAG 및 충돌 해결 정의
-│   ├── branches/                    # 5대 도메인 26개 세부 HTML 규칙 분기 (Depth 1~3)
-│   │   ├── reasoning/               # 단순 논증(low), 찬반·반론 구조화 논증(mid), 심층 교차 종합(high)
-│   │   ├── coding/                  # 빠른 수정(low), 런타임 디버깅(mid), 동시성(high), 아키텍처(high)
-│   │   ├── research/                # 단일 사실 확인(low), 다중 출처 감사(mid), 문헌 메타 종합(high)
-│   │   ├── ai-systems/              # Prompt, Context, Harness, Loop, Graph, 복합 레시피, Frontier Craft
-│   │   └── meta/                    # 모델 정책, 스킬 위계, 악성 스킬 검역, 커스텀 분기 빌더
-│   └── assets/                      # UI 스타일시트, 라우팅 엔진(rule-ui.js), 오픈소스 라이선스
-├── .agents/skills/                  # 보안 검증을 통과한 8개 계층형 로컬 스킬 (SKILL.md)
+│   ├── src/                         # [Single Source of Truth] 28개 Markdown + YAML 규칙 원본
+│   │   ├── router.md                # AI 1순위 진입 루트 라우터 (Depth 0)
+│   │   └── branches/                # 5대 도메인 27개 세부 Markdown 규칙 분기 (Depth 1~3)
+│   │       ├── reasoning/           # 단순 논증(low), 찬반·반론 구조화 논증(mid), 심층 교차 종합(high)
+│   │       ├── coding/              # 빠른 수정(low), 런타임 디버깅(mid), 동시성(high), 아키텍처(high)
+│   │       ├── research/            # 단일 사실 확인(low), 다중 출처 감사(mid), 문헌 메타 종합(high)
+│   │       ├── ai-systems/          # Prompt, Context, Harness, Loop, Graph, 복합 레시피, Frontier Craft
+│   │       └── meta/                # 모델 정책, 스킬 위계, 악성 스킬 검역, 환각 방지(anti-hallucination), 커스텀 빌더
+│   ├── index.html                   # 사람용 인터랙티브 MD→HTML 탐색기 & Export Loop 시뮬레이터 UI
+│   ├── router.html                  # [Compiled] 결정적 컴파일 HTML 루트 뷰 (Depth 0)
+│   ├── branches/                    # [Compiled] 결정적 컴파일 27개 HTML 분기 뷰 (Depth 1~3)
+│   ├── model-catalog.json           # Gemini 4 Carbon/Argon/Neon/Hydrogen & 3.5/Decisions v3.0 카탈로그
+│   ├── skill-hierarchy.json         # 4계층 스킬 위계 DAG 및 충돌 해결 정의 (v2.0, 9개 스킬)
+│   └── assets/                      # UI 스타일시트, 라우팅·Export 엔진(rule-ui.js), tree-data.js, 라이선스
+├── .agents/skills/                  # 보안 검증을 통과한 9개 계층형 로컬 스킬 (SKILL.md)
 ├── scripts/
-│   ├── resolve_rule.py              # 작업 쿼리 -> 단일 <active_rule_packet> XML/JSON 결정적 라우터
-│   ├── validate_harness.py          # Google Harness² 예산·링크·깊이·필수 파일 검증기
+│   ├── build_rules_html.py          # MD 단일 원천 -> HTML 뷰 & tree-data.js 결정적 컴파일러 (--check 지원)
+│   ├── resolve_rule.py              # MD 우선(HTML 폴백) 단일 <active_rule_packet> XML/JSON/MD 라우터
+│   ├── validate_harness.py          # Google Harness² 예산·MD-HTML 동기화·카탈로그·보안 통합 검증기
 │   └── scan_skills_security.py      # 악성 스킬 정적 보안 검역기 (Tier 0 Gate)
 ├── benchmark/                       # 실증 A/B 벤치마크 하네스, 체크포인트 캐시, Argon High 감사기
 │   ├── AB_BENCHMARK_REPORT.md       # A/B 벤치마크 & Argon High 정밀 감사 최종 리포트
@@ -143,25 +151,31 @@ html-rule-harness/
 │   ├── audit_quality_high.py        # 6차원 정밀 품질 및 토큰 가성비 감사 스크립트
 │   └── cache/                       # 중단 복구 체크포인트(ab_checkpoint.json) 및 감사 결과
 ├── reference/                       # GitHub, 공식 문서, Liner Scholar 학술 논문(40+편) 정리
-├── library/                         # Google Harness² Propose-Probe-Compose 반복 경험 로그 (Iter 01~07)
-└── tests/                           # 라우팅·Effort 보정·스킬 위계·악성 스킬 차단 단위 테스트 (12건)
+├── library/                         # Google Harness² Propose-Probe-Compose 반복 경험 로그 (Iter 01~08)
+└── tests/                           # MD-HTML 패리티·라우팅·Effort·Anti-Hallucination·v3.0 스펙 단위 테스트 (17건)
 ```
 
 ### 주요 실행 커맨드
 
 ```powershell
-# 1. 작업 설명과 난이도 신호에 따른 단일 <active_rule_packet> XML 추출
-python scripts/resolve_rule.py --task "task_queue.py 런타임 오류 3건 디버깅 및 단위 테스트 통과" --files 2 --attempts 1 --format xml
+# 1. Markdown 단일 원천 -> HTML 뷰 및 tree-data.js 결정적 컴파일 / 동기화 검증
+python scripts/build_rules_html.py
+python scripts/build_rules_html.py --check
 
-# 2. 외부 검증기(단위 테스트)가 없는 상태에서 모달 천장 회피용 상위 모델 전환 확인
+# 2. 작업 설명과 난이도 신호에 따른 단일 <active_rule_packet> 추출 (MD 원본 1순위)
+python scripts/resolve_rule.py --task "task_queue.py 런타임 오류 3건 디버깅 및 단위 테스트 통과" --files 2 --attempts 1 --format xml
+python scripts/resolve_rule.py --task "Gemini 4 Carbon 환각 검증 및 근거 인용 감사" --format json
+
+# 3. 외부 검증기(단위 테스트)가 없는 상태에서 모달 천장 회피용 상위 모델 전환 확인
 python scripts/resolve_rule.py --task "코드 런타임 오류 디버깅" --files 2 --attempts 1 --no-verifier --format json
 
-# 3. Google Harness² 아키텍처 예산 + 악성 스킬 보안 스캔 + 전체 단위 테스트 실행
+# 4. Google Harness² 아키텍처 예산 + MD-HTML 동기화 + 보안 스캔 + 단위 테스트(17건) + JS 문법 검증
 python scripts/validate_harness.py
 python scripts/scan_skills_security.py
 python -m unittest discover -s tests -v
+node --check rules/assets/rule-ui.js
 
-# 4. A/B 벤치마크 검증 및 Argon High 정밀 품질 감사 재실행
+# 5. A/B 벤치마크 검증 및 Argon High 정밀 품질 감사 재실행
 python benchmark/ab_harness.py verify
 python benchmark/audit_quality_high.py
 ```

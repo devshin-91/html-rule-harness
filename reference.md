@@ -44,6 +44,21 @@
 - **모델 벤더 공식 제어 & 전환 기준**: OpenAI `reasoning.effort` / Anthropic Adaptive Thinking (`Sonnet high 초과 → Opus medium`) / Google Gemini `thinking_level` (`Flash 1M 컨텍스트 vs Pro 상충 추론`)
 - **Liner Scholar 6차 세션  실증 임계치**: *Scaling Test-Time Compute* (`arXiv:2408.03314`), *Reasoning Floor* (`arXiv:2504.14047`, `arXiv:2510.03605`), *Modal Ceiling* (`arXiv:2606.28661`), *Thinking Longer SWE* (`arXiv:2503.20522`), *SWE-Replay* (`arXiv:2601.22129`), *Interaction Scaling* (`arXiv:2607.11598`), *RAG Re-ranker Compute* (`arXiv:2603.14635`, `+7.5 NDCG@10`), *T2MO* (`arXiv:2608.08528`)
 
-## 7. 실증 A/B 벤치마크 및 체크포인트 캐시 레퍼런스 (Phase 7)
+## 9. 실증 A/B 벤치마크 및 체크포인트 캐시 레퍼런스 (Phase 7)
 - [`benchmark/AB_BENCHMARK_REPORT.md`](./benchmark/AB_BENCHMARK_REPORT.md): 그룹 A(Google Harness² 단독 + `Gemini 4 Argon (Medium)` 고정) 대 그룹 B(Google Harness² + HTML 분기형 규칙 + 작업별 `Argon Low/Medium/High` 매핑) 실측 시간·토큰·품질 비교 리포트.
 - [`benchmark/ab_harness.py`](./benchmark/ab_harness.py) & [`benchmark/cache/ab_checkpoint.json`](./benchmark/cache/ab_checkpoint.json): 세부 작업별 트랜스크립트 토큰(`input_tokens`, `cache_read_tokens`, `output_tokens`), 소요 시간, 자동 검증 루브릭 점수 및 쿼터 스냅샷을 기록하는 중단 복구용 체크포인트 캐시.
+
+## 10. v2.0 Refactor: MD-vs-HTML Single Source, Anti-Hallucination & Gemini 4 Carbon/Argon/Hydrogen Specs (Phase 8)
+- **MD-vs-HTML Single Source of Truth (`devshin-91/md-html-guide`, `md-html-guidelines.md`)**:
+  - 4단계 포맷 결정 규칙: 에이전트 상시/세션 로드·사람 편집·git diff 대상은 **Markdown 단일 원천(`rules/src/**/*.md`)**, 사람 비교·검토·파라미터 선택 뷰는 **결정적 MD→HTML 컴파일 뷰(`scripts/build_rules_html.py`, 0 LLM 토큰, ~1.2× 크기)** + **JSON/Markdown Export Loop**.
+  - 실증 토큰 절감: 문서형 HTML은 Markdown 대비 **~4–7×** 토큰 소모(CSS+JS 56–60%, `<style>`/`<script>` 제거 후에도 2.1–2.8×); AI 에이전트에는 절대 인간용 HTML 뷰를 되먹이지 않고 MD 원본 또는 최소 패킷을 주입.
+- **Anti-Hallucination Guardrails (`devshin-91/antigravity-gemini-anti-hallucination`, commit `051b7f5`)**:
+  - **공통 4대 원칙**: (1) 도구 우선 검증 및 역환각(신규 모델/버전 허위 부정) 금지, (2) 선(先) 원문 발췌 및 `#Lstart-Lend` 라인 인용, (3) 모름의 권한 및 거짓 전제 교정(아첨 금지), (4) 실행 기반 검증(해시·날짜·IEEE-754·패치 암산 금지).
+  - **5대 모델 계보별 환각 제거 수칙** (A/B `380 → 500`, `+31.58%`): `Flash/Lite` (`3.8-flash`, `3.5-flash-lite`), `Hydrogen` (`4-hydrogen`), `Neon/Pro` (`4-neon`), `Argon` (`4-argon`), `Carbon` (`4-carbon` — 유령 완료/부분 패치 차단, `Decimal(str(x))` + `ROUND_HALF_UP`, Long Decode `total_input_tokens` 압축 트리거 금지).
+  - **Tier 0–2 결정론적 검증 파이프라인 (`ref-fact-checker`)**: Tier 0 오프라인 라인/인용 정합성 → Tier 1 SQLite WAL + DOI 메타데이터 캐시(0 LLM 토큰) → Tier 2 PDF 근거 슬라이싱(입력 토큰 -90%).
+- **Official Gemini API v3.0 Active Model Specs (`google-genai >= 3.2.0`, `@google/genai >= 3.2.0`)**:
+  - Interactions API GA (`v1`), Managed Agents & Decisions API (`gemini-decision-1`, `v1beta`); 구세대 레거시 Gemini 1.x/2.x 모델군 및 `temperature`/`top_p`/`top_k`/`thinking_budget` 완전 제거.
+  - `gemini-4-carbon` & `gemini-4-argon`: 1M 통합 윈도우, `thinking_level` (`low`, `medium` 기본, `high`; `xhigh`·`minimal`·명시적 캐싱·픽셀 세그멘테이션 마스크 미지원), Long Decode (`background=True` + `max_output_tokens > 65536`, `total_input_tokens` 압축 트리거 금지).
+  - `gemini-4-hydrogen`: 1M 통합 윈도우, `thinking_level` (`low`, `medium`, `high` 기본, `xhigh`; `minimal`·명시적 캐싱 미지원), Long Decode 지원.
+  - `gemini-3.5-flash-lite` (`minimal`~`high`) & `gemini-decision-1` (262k 입력 / 0 출력 보정형 `noul`/`choice`/`score`).
+

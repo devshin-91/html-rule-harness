@@ -346,6 +346,70 @@ h2 {
   color: var(--text);
 }
 
+.md-source-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-top: 10px;
+  padding: 10px 13px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  font-size: 0.8rem;
+  line-height: 1.48;
+  color: var(--text);
+}
+
+.md-source-banner-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.md-source-banner-main .ico {
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.source-truth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--bg-card);
+  border: 1px solid var(--accent-border);
+  white-space: nowrap;
+}
+
+.packet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn.export-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--text-code);
+  box-shadow: none;
+}
+
+.btn.export-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
 .candidate-caption {
   font-size: 0.76rem;
   color: var(--text-muted);

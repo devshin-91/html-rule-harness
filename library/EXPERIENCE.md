@@ -68,3 +68,17 @@
 - **lesson**: 단일 `<active_rule_packet>` 주입은 규칙 컨텍스트를 96.7% 절감할 뿐 아니라, 전체 규칙 덤프에서 발생하던 **규칙 희석(Context Rot — T3 회귀 테스트 누락, T4 기존 주석 임의 삭제, T1 과잉 장문 생성)**을 막아 입력 토큰 **-33.9%**, 총 토큰 **-31.3%**, 품질 점수 **92점 → 100점**을 동시에 달성한다.
 - **evidence**: `benchmark/AB_BENCHMARK_REPORT.md`, `benchmark/cache/ab_checkpoint.json` (8개 워커 실측 트랜스크립트 로그).
 - **confidence**: high
+
+
+## Iteration 07 → 08: MD Single Source of Truth → Deterministic HTML Compiler, Anti-Hallucination Guardrails & Gemini 4 v3.0 Catalog
+
+- **adopted**: `v2-md-source-carbon-refactor`
+- **cue**: (1) HTML 파일을 직접 손으로 편집·git diff하면 AI가 소비하는 규칙 소스와 사람용 리뷰 뷰가 뒤섞여 유지보수 비용과 토큰 오버헤드(~4–7×)가 증가하고(`md-html-guide`), (2) `model-catalog.json` v2.0의 추상 모델명(`gemini-flash`/`gemini-pro`)만으로는 Gemini 4 Carbon/Argon/Hydrogen/Neon·3.5 Flash-Lite·Decisions API의 정확한 `thinking_level` 상하한, 미지원 API, Long Decode 회계 함정과 5계보별 환각 패턴(`antigravity-gemini-anti-hallucination`)을 방어할 수 없음.
+- **what each edit did**:
+  1. **Propose**: 28개 규칙 전체를 Markdown + YAML Frontmatter 단일 원천(`rules/src/**/*.md`)으로 승격하고, 표준 라이브러리 컴파일러(`scripts/build_rules_html.py`, `--check`, 0 LLM 토큰)로 HTML 뷰 및 `rules/assets/tree-data.js`를 파생 생성하는 아키텍처로 전환. 동시에 `meta.anti-hallucination` 분기, Tier 3 `anti-hallucination-guard` 스킬, `model-catalog.json` v3.0, Explorer UI JSON/Markdown Export Loop를 설계.
+  2. **Probe**: `build_rules_html.py --check`, `validate_harness.py`, `scan_skills_security.py`, `tests/test_rules_harness.py` (17건), `node --check rules/assets/rule-ui.js`를 실행해 MD-vs-HTML 28노드 0불일치, AI 블록 상한(`max 2,764 B <= 2,800 B`), `AGENTS.md` 예산(`5,395 <= 8,000` chars), 레거시 1.x/2.x 모델 0건, 보안 스캔 0건, PII 0건을 검증.
+  3. **Compose**: `resolve_rule.py`를 MD 1순위(HTML 자동 폴백)로 전환하고, Explorer UI에 `MD Source → HTML View` 배너, `JSON 설정 내보내기` + `Markdown 규칙 패킷 내보내기` + XML 복사 버튼, `환각 검증 [Anti-Hallucination]` 프리셋을 통합해 편집→컴파일→검토→내보내기 순환 루프를 완성.
+- **lesson**: 규칙 시스템의 단일 원천은 Markdown(`rules/src/**/*.md`)에 두고, 사람용 HTML 뷰는 0-토큰 결정적 컴파일 산출물로 분리하며, 인터랙티브 UI는 `.json`/`.md` Export Loop로 닫아야 토큰 효율과 인간 리뷰 품질을 동시에 보장할 수 있다. 또한 최상위 모델(`gemini-4-carbon`/`argon`) 라우팅에는 모델별 미지원 API·`thinking_level` 경계·Long Decode 토큰 회계 규칙을 명시적으로 결합해야 환각과 런타임 오류를 원천 차단할 수 있다.
+- **evidence**: [`experiments/08-v2-md-source-carbon-refactor.md`](./experiments/08-v2-md-source-carbon-refactor.md), `build_rules_html.py --check` (`28` MD/HTML nodes, `45,916 B` MD / `73,564 B` HTML), `validate_harness.py` (`md_html_in_sync: true`, `skills: 9`), `unittest` (`17/17 OK`), `scan_skills_security.py` (`0 findings`).
+- **confidence**: high
+

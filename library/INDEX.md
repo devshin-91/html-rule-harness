@@ -21,3 +21,7 @@ Google Harness² (`google-research/harness2`, arXiv:2610.14224)의 **Harnessing-
 - [`EXPERIENCE.md#iteration-06--07`](./EXPERIENCE.md)
   - **cue**: HTML 분기형 규칙 시스템 + 작업별 모델·Effort 라우팅의 실제 토큰·시간·품질 효용성을 A/B 테스트로 검증하고 쿼터 중단에 대비해야 할 때
   - **lesson**: `benchmark/ab_harness.py`와 체크포인트 캐시(`ab_checkpoint.json`)로 세부 작업 단위 재개를 보장하고, 단일 `<active_rule_packet>` 주입으로 규칙 희석을 차단해 입력 토큰 -33.9%, 총 토큰 -31.3%, 품질 92→100점을 달성한다.
+- [`EXPERIENCE.md#iteration-07--08`](./EXPERIENCE.md) & [`experiments/08-v2-md-source-carbon-refactor.md`](./experiments/08-v2-md-source-carbon-refactor.md)
+  - **cue**: HTML 수동 편집으로 인한 토큰/diff 오버헤드를 없애고(`md-html-guide`), Gemini 4 Carbon/Argon/Neon/Hydrogen v3.0 스펙과 5계보 Anti-Hallucination 가드레일을 라우터·UI에 통합해야 할 때
+  - **lesson**: `rules/src/**/*.md`를 단일 원천으로 두고 `scripts/build_rules_html.py` (`--check`, 0 LLM 토큰)로 28개 HTML 뷰를 결정적 컴파일하며, `resolve_rule.py`는 MD 1순위로 파싱하고 Explorer UI는 JSON/Markdown Export Loop와 `meta.anti-hallucination` 프리셋을 제공한다.
+
